@@ -1,12 +1,18 @@
 module EventbriteSDK
-  class EventbriteAPIError < StandardError
+  class EventbriteAPIError < RuntimeError
+    attr_reader :message, :response
+
     def initialize(msg = '', response = :none)
-      @msg = msg
+      @message = msg
       @response = response
     end
 
-    def json_error
-      JSON.parse(@response)
+    def parsed_error
+      JSON.parse(response.body)
+    end
+
+    def status_code
+      response.code
     end
   end
 

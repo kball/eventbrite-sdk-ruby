@@ -4,6 +4,8 @@ require 'rest_client'
 
 require 'eventbrite_sdk/version'
 require 'eventbrite_sdk/exceptions'
+require 'eventbrite_sdk/resource/operations/attribute_schema'
+require 'eventbrite_sdk/resource/operations/endpoint'
 require 'eventbrite_sdk/resource/attributes'
 require 'eventbrite_sdk/resource/null_schema'
 require 'eventbrite_sdk/resource/schema'
@@ -57,7 +59,7 @@ module EventbriteSDK
         JSON.parse(response.body)
       rescue *EXCEPTION_MAP.keys => err
         handler = EXCEPTION_MAP[err.class]
-        raise handler[:class], handler[:message], err.response.body
+        raise handler[:class].new(handler[:message], err.response)
       end
     else
       raise AuthenticationError, 'you must provide a token to use the API'

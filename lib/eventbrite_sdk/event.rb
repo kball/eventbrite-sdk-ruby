@@ -30,5 +30,15 @@ module EventbriteSDK
       string 'created', read_only: true
       string 'changed', read_only: true
     end
+
+    # Defines event#cancel, event#publish, and event#unpublish
+    #
+    # When an event has an id the POST is made, otherwise we return false
+    # POSTS to event/:id/(cancel|publish|unpublish)
+    %i(cancel publish unpublish).each do |method|
+      define_method(method) do
+        !new? && save(method.to_s)
+      end
+    end
   end
 end

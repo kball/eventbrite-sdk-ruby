@@ -3,7 +3,7 @@ module EndpointStub
     payload = body.is_a?(Symbol) ? file(body) : body.to_json
 
     stub_request(method, "https://www.eventbriteapi.com/v3/#{path}").
-      to_return(body: payload, status: 200)
+      to_return(body: payload, status: status)
   end
 
   private

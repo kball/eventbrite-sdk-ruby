@@ -82,6 +82,16 @@ module EventbriteSDK
           expect(resource.endpoint_path).to eq('events')
         end
       end
+
+      context 'when given a postfix path' do
+        it 'postfixes the endpoint url with postfix applied' do
+          described_class.endpoint 'events/:id', primary_key: :id
+
+          resource = described_class.new('id' => '1234')
+
+          expect(resource.endpoint_path('postfix')).to eq('events/1234/postfix')
+        end
+      end
     end
 
     describe '#refresh!' do
@@ -172,6 +182,20 @@ module EventbriteSDK
           event.save
 
           expect(event.name.html).to eq(name)
+        end
+      end
+
+      context 'when given a postfix_path' do
+        it 'passes it to endpoint_path' do
+          described_class.endpoint 'events/:id', primary_key: :id
+          resource = described_class.new('id' => '1234')
+          repo = double(post: { 'id' => '1234' })
+
+          resource.save('postfix', repo)
+
+          expect(repo).to have_received(:post).with(
+            url: 'events/1234/postfix', payload: {}
+          )
         end
       end
     end

@@ -50,7 +50,7 @@ describe EventbriteSDK do
       it 'sets the Authorization header with the given api token' do
         token = 'token'
         described_class.token = token
-        response = double(body: {hey: 'there'}.to_json)
+        response = double(body: { hey: 'there' }.to_json)
         allow(RestClient::Request).to receive(:execute).and_return(response)
 
         described_class.get(url: 'events/1')
