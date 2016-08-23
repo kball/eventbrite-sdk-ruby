@@ -6,7 +6,7 @@ module EventbriteSDK
     attr_reader :primary_key
 
     class << self
-      def find(params, repo = EventbriteSDK)
+      def retrieve(params, repo = EventbriteSDK)
         response = repo.get url: url_endpoint_from_params(params)
 
         new response
@@ -17,10 +17,33 @@ module EventbriteSDK
           instance.assign_attributes(attrs)
         end
       end
+
+      def belongs_to(rel_method, object_class: nil, mappings: nil)
+        define_method(rel_method) do
+          keys = mappings.each_with_object({}) do | (key, method), hash|
+            hash[key.to_s] = public_send(method)
+          end
+
+          @relationships[rel_method] ||= begin
+              EventbriteSDK.resource(object_class).retrieve(keys)
+          end
+        end
+      end
+
+      def has_many(rel_method, object_class: nil, key: nil)
+        define_method(rel_method) do
+          @relationships[rel_method] ||= ResourceList.new(
+            url_base: endpoint_path(rel_method),
+            object_class: EventbriteSDK.resource(object_class),
+            key: key || rel_method
+          )
+        end
+      end
     end
 
     def initialize(hydrated_attrs = {})
       reload(hydrated_attrs)
+      @relationships = {}
     end
 
     def new?

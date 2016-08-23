@@ -174,7 +174,7 @@ module EventbriteSDK
 
       context 'when a resource that has a primary_key' do
         it 'rehydrates the instance with the response of the endpoint' do
-          event = DummyResource.find(id: '24967032065')
+          event = DummyResource.retrieve(id: '24967032065')
 
           name = "Test event #{SecureRandom.hex(4)}"
           event.assign_attributes('name.html' => name)

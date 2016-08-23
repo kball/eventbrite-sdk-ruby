@@ -7,10 +7,10 @@ module EventbriteSDK
       EventbriteSDK.token = 'PCMBPWSLYSXBYK53IHA3'
     end
 
-    describe '.find' do
+    describe '.retrieve' do
       context 'when found' do
         it 'returns a new instance' do
-          event = described_class.find id: '24967032065'
+          event = described_class.retrieve id: '24967032065'
 
           expect(event).to be_an_instance_of(described_class)
         end
@@ -18,7 +18,7 @@ module EventbriteSDK
 
       context 'when not found' do
         it 'throws some sort of error' do
-          expect { described_class.find id: '10000' }.
+          expect { described_class.retrieve id: '10000' }.
             to raise_error('requested object was not found')
         end
       end
@@ -51,6 +51,18 @@ module EventbriteSDK
 
           expect(event.cancel).to eq(false)
         end
+      end
+    end
+
+    describe '#orders' do
+      context 'when event is new' do
+        it 'instantiates a new empty ResourceList' do
+          expect(subject.orders).to be_an_instance_of(ResourceList)
+          expect(subject.orders).to be_empty
+        end
+      end
+
+      context 'when event exists' do
       end
     end
 

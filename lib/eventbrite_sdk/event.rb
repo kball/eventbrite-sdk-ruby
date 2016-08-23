@@ -4,6 +4,11 @@ module EventbriteSDK
 
     attributes_prefix 'event'
 
+    has_many :orders, object_class: 'Order'
+    belongs_to :organizer,
+               object_class: 'Organizer',
+               mappings: { id: :organizer_id }
+
     schema_attributes do
       string 'name.html'
       string 'description.html'
@@ -29,6 +34,7 @@ module EventbriteSDK
       boolean 'show_remaining'
       string 'created', read_only: true
       string 'changed', read_only: true
+      string 'resource_uri', read_only: true
     end
 
     # Defines event#cancel, event#publish, and event#unpublish

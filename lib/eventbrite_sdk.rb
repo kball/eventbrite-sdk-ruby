@@ -9,8 +9,13 @@ require 'eventbrite_sdk/resource/operations/endpoint'
 require 'eventbrite_sdk/resource/attributes'
 require 'eventbrite_sdk/resource/null_schema'
 require 'eventbrite_sdk/resource/schema'
+require 'eventbrite_sdk/resource_list'
 require 'eventbrite_sdk/resource'
+
 require 'eventbrite_sdk/event'
+require 'eventbrite_sdk/order'
+require 'eventbrite_sdk/organizer'
+require 'eventbrite_sdk/user'
 
 module EventbriteSDK
   BASE = "https://www.eventbriteapi.com/v#{VERSION.split('.').first}".freeze
@@ -68,5 +73,9 @@ module EventbriteSDK
 
   def self.url(path)
     "#{BASE}/#{path}/"
+  end
+
+  def self.resource(resource_name)
+    const_get(resource_name)
   end
 end

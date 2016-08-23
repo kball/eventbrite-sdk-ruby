@@ -72,4 +72,14 @@ describe EventbriteSDK do
       end
     end
   end
+
+  describe '.resource' do
+    it 'calls self#const_get with the given argument' do
+      allow(described_class).to receive(:const_get)
+
+      described_class.resource('Name')
+
+      expect(described_class).to have_received(:const_get).with('Name')
+    end
+  end
 end
