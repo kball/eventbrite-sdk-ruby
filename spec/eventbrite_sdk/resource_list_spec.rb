@@ -38,10 +38,10 @@ module EventbriteSDK
       end
 
       context 'when the request payload does not contain key given' do
-        it 'hydrates objects within a given key with then given object_class' do
+        it 'hydrates objects within a given key with given object_class' do
           list = described_class.new(
             url_base: 'url',
-            object_class: Event,
+            object_class: 'Event',
             key: :events
           )
           payload = {

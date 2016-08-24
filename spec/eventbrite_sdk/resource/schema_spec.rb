@@ -3,57 +3,47 @@ require 'spec_helper'
 module EventbriteSDK
   RSpec.describe Resource::Schema do
     subject { described_class.new('schema') }
-    describe '#writable?' do
-      it 'populates @read_only when given read_only: true' do
-        subject.integer 'read', read_only: true
-        subject.integer 'write'
 
-        expect(subject.writeable?('read')).to eq(false)
-        expect(subject.writeable?('write')).to eq(true)
+    describe 'dynamically defined type methods: boolean datetime integer string' do
+      it 'is writeable when not given read_only option' do
+        %i(boolean datetime integer string).each do |method|
+          subject.public_send(method, 'write')
+          subject.public_send(method, 'read', read_only: true)
+
+          expect(subject.writeable?('write')).to eq(true)
+          expect(subject.writeable?('read')).to eq(false)
+        end
       end
     end
 
-    describe '#integer' do
-      it 'adds the given value as a key in @attrs with type as value' do
-        %w(this.that that.this).each do |value|
-          subject.integer value
-        end
+    describe '#type' do
+      context 'when key exists' do
+        it "returns it's type" do
+          subject.integer('key')
 
-        expect(subject.type('this.that')).to eq(:integer)
-        expect(subject.type('that.this')).to eq(:integer)
+          expect(subject.type('key')).to eq(:integer)
+        end
+      end
+
+      context 'when key does not exist' do
+        it 'returns nil' do
+          expect(subject.type('key')).to be_nil
+        end
       end
     end
 
-    describe '#string' do
-      it 'adds the given value as a key in @attrs with type as value' do
-        %w(this.that that.this).each do |value|
-          subject.string value
+    describe '#writeable?' do
+      context 'when attrs does not contain the key' do
+        it 'raises an exception' do
+          name = 'IMA_SPLODE_ON_U'
+          key = 'not in scope'
+          schema = described_class.new(name)
+
+          expect { schema.writeable?('not in scope') }.
+            to raise_error(
+              EventbriteSDK::InvalidAttribute, "attribute `#{key}` not present in #{name}"
+            )
         end
-
-        expect(subject.type('this.that')).to eq(:string)
-        expect(subject.type('that.this')).to eq(:string)
-      end
-    end
-
-    describe '#boolean' do
-      it 'adds the given value as a key in @attrs with type as value' do
-        %w(this.that that.this).each do |value|
-          subject.boolean value
-        end
-
-        expect(subject.type('this.that')).to eq(:boolean)
-        expect(subject.type('that.this')).to eq(:boolean)
-      end
-    end
-
-    describe '#datetime' do
-      it 'adds the given value as a key in @attrs with type as value' do
-        %w(this.that that.this).each do |value|
-          subject.datetime value
-        end
-
-        expect(subject.type('this.that')).to eq(:datetime)
-        expect(subject.type('that.this')).to eq(:datetime)
       end
     end
   end

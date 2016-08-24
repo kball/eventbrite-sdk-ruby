@@ -13,6 +13,4 @@ require 'eventbrite_sdk'
 require 'irb'
 require 'irb/completion'
 
-EventbriteSDK.token = 'PCMBPWSLYSXBYK53IHA3'
-ID = '24967032065'
 IRB.start

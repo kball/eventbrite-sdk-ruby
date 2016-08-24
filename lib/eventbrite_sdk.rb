@@ -27,6 +27,10 @@ module EventbriteSDK
     RestClient::BadRequest => {
       class: BadRequest,
       message: 'invalid request',
+    },
+    RestClient::Unauthorized => {
+      class: Unauthorized,
+      message: 'unauthorized request',
     }
   }.freeze
   THREAD_KEY = :eb_api_token

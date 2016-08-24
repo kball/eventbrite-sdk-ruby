@@ -4,13 +4,17 @@ module EventbriteSDK
   RSpec.describe Event do
     before do
       # TODO mock once we have some real responses to store as fixtures
-      EventbriteSDK.token = 'PCMBPWSLYSXBYK53IHA3'
+      EventbriteSDK.token = 'token'
     end
 
     describe '.retrieve' do
       context 'when found' do
         it 'returns a new instance' do
-          event = described_class.retrieve id: '24967032065'
+          stub_endpoint(
+            path: 'events/1234',
+            body: :event_read,
+          )
+          event = described_class.retrieve id: '1234'
 
           expect(event).to be_an_instance_of(described_class)
         end
@@ -18,6 +22,12 @@ module EventbriteSDK
 
       context 'when not found' do
         it 'throws some sort of error' do
+          stub_endpoint(
+            path: 'events/10000',
+            status: 404,
+            body: :event_not_found,
+          )
+
           expect { described_class.retrieve id: '10000' }.
             to raise_error('requested object was not found')
         end
@@ -60,9 +70,6 @@ module EventbriteSDK
           expect(subject.orders).to be_an_instance_of(ResourceList)
           expect(subject.orders).to be_empty
         end
-      end
-
-      context 'when event exists' do
       end
     end
 

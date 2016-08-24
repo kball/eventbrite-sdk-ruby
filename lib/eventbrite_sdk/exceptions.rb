@@ -20,4 +20,5 @@ module EventbriteSDK
   class BadRequest < EventbriteAPIError; end
   class InvalidAttribute < EventbriteAPIError; end
   class ResourceNotFound < EventbriteAPIError; end
+  class Unauthorized < EventbriteAPIError; end
 end

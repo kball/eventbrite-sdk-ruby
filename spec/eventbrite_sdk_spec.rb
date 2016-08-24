@@ -64,6 +64,19 @@ describe EventbriteSDK do
       end
     end
 
+    context 'with a bad token' do
+      it 'sets the Authorization header with the given api token' do
+        stub_endpoint(path: 'events/1', status: 401)
+
+        token = 'token'
+        described_class.token = token
+
+        expect do
+          described_class.get(url: 'events/1')
+        end.to raise_error(described_class::Unauthorized)
+      end
+    end
+
     context 'without token' do
       it 'raises EventbriteSDK::AuthenticationError' do
         expect do

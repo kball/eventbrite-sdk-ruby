@@ -36,8 +36,7 @@ module EventbriteSDK
         if attrs.has_key?(key)
           true
         else
-          raise(
-            InvalidAttribute,
+          raise InvalidAttribute.new(
             "attribute `#{key}` not present in #{resource_name}"
           )
         end

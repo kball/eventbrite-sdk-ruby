@@ -3,7 +3,7 @@ require 'spec_helper'
 module EventbriteSDK
   RSpec.describe Resource do
     describe '.endpoint' do
-      it 'sets a singleton instance var called endpoint' do
+      it 'sets a eigenclass instance var called endpoint' do
         described_class.endpoint 'endpoint'
 
         expect(described_class.instance_variable_get(:@endpoint)).
@@ -84,7 +84,7 @@ module EventbriteSDK
       end
 
       context 'when given a postfix path' do
-        it 'postfixes the endpoint url with postfix applied' do
+        it 'postfixes the endpoint' do
           described_class.endpoint 'events/:id', primary_key: :id
 
           resource = described_class.new('id' => '1234')
@@ -101,7 +101,7 @@ module EventbriteSDK
 
       context 'when a primary_key exists' do
         it 'reloads the instance from the return of the api' do
-          stub_endpoint(path: 'events/1/', body: :event_read)
+          stub_get(path: 'events/1', fixture: :event_read)
 
           event = DummyResource.new('id' => '1')
 
@@ -139,19 +139,30 @@ module EventbriteSDK
 
     describe '#save' do
       before do
-        EventbriteSDK.token = 'PCMBPWSLYSXBYK53IHA3'
+        EventbriteSDK.token = 'token'
       end
 
       context 'with a new resource' do
         context 'when save is successful' do
           it 'sets the returned id, and resets changes' do
+            name = "Test event #{SecureRandom.hex(4)}"
+
             described_class.endpoint 'events/:id', primary_key: :id
             described_class.attributes_prefix 'event'
             allow(described_class).to receive(:schema).and_return(
               NullSchema.new
             )
 
-            name = "Test event #{SecureRandom.hex(4)}"
+            stub_post_with_response(
+              path: 'events',
+              fixture: :event_created,
+              override: {
+                'id' => 'new',
+                'name' => {
+                  'html' => name,
+                }
+              }
+            )
 
             resource = described_class.build(
               'name.html' => name,
@@ -174,9 +185,24 @@ module EventbriteSDK
 
       context 'when a resource that has a primary_key' do
         it 'rehydrates the instance with the response of the endpoint' do
-          event = DummyResource.retrieve(id: '24967032065')
-
           name = "Test event #{SecureRandom.hex(4)}"
+          stub_get(
+            path: 'events/111',
+            fixture: :event_read,
+            override: { 'id' => '111' },
+          )
+          stub_post_with_response(
+            path: 'events/111',
+            fixture: :event_created,
+            override: {
+              'name' => {
+                'html' => name,
+                'text' => name
+              }
+            }
+          )
+          event = DummyResource.retrieve(id: '111')
+
           event.assign_attributes('name.html' => name)
 
           event.save

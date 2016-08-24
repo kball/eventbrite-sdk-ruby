@@ -1,0 +1,49 @@
+{
+  "name": {
+    "text": "Test event 879a2130",
+    "html": "Test event 879a2130"
+  },
+  "description": {
+    "text": "This is my new description",
+    "html": "<P>This is my new description</P>"
+  },
+  "url": "http://www.eventbrite.com/e/test-event-879a2130-tickets-24967032065",
+  "start": {
+    "timezone": "America/Los_Angeles",
+    "local": "2016-06-05T19:00:00",
+    "utc": "2016-06-06T02:00:00Z"
+  },
+  "end": {
+    "timezone": "America/Los_Angeles",
+    "local": "2017-03-13T22:00:00",
+    "utc": "2017-03-14T05:00:00Z"
+  },
+  "created": "2016-04-26T17:52:12Z",
+  "changed": "2016-08-24T17:44:35Z",
+  "capacity": 10,
+  "capacity_is_custom": true,
+  "status": "draft",
+  "currency": "USD",
+  "listed": false,
+  "shareable": true,
+  "invite_only": false,
+  "online_event": false,
+  "show_remaining": false,
+  "tx_time_limit": 480,
+  "hide_start_date": false,
+  "hide_end_date": true,
+  "locale": "en_US",
+  "is_locked": false,
+  "privacy_setting": "unlocked",
+  "is_series": false,
+  "is_series_parent": false,
+  "is_reserved_seating": false,
+  "logo_id": null,
+  "organizer_id": "10714833457",
+  "venue_id": "14986832",
+  "category_id": null,
+  "subcategory_id": null,
+  "format_id": null,
+  "resource_uri": "https://www.eventbriteapi.com/v3/events/24967032065/",
+  "logo": null
+}
