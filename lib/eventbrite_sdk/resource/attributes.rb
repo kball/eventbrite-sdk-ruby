@@ -21,9 +21,7 @@ module EventbriteSDK
 
       def assign_attributes(new_attrs)
         new_attrs.each do |attribute_key, value|
-          if schema.writeable?(attribute_key)
-            assign_value(attribute_key, value)
-          end
+          assign_value(attribute_key, value) if schema.writeable?(attribute_key)
         end
 
         nil
@@ -101,7 +99,7 @@ module EventbriteSDK
       end
 
       def respond_to_missing?(method_name, _include_private = false)
-        attrs.has_key?(method_name.to_s)
+        attrs.has_key?(method_name.to_s) || super
       end
 
       def handle_requested_attr(value)

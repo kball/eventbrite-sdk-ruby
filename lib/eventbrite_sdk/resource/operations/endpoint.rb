@@ -5,6 +5,10 @@ module EventbriteSDK
         module ClassMethods
           attr_reader :endpoint, :endpoint_opts
 
+          def retrieve(params, request = EventbriteSDK)
+            new request.get(url: url_endpoint_from_params(params))
+          end
+
           def endpoint(endpoint, opts = {})
             @endpoint_opts = opts
             @endpoint = endpoint
@@ -35,8 +39,8 @@ module EventbriteSDK
             end
           end
 
-          def full_endpoint_url
-            EventbriteSDK.url endpoint_path
+          def full_endpoint_url(sdk = EventbriteSDK)
+            sdk.url endpoint_path
           end
         end
 
