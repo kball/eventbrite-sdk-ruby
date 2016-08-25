@@ -1,6 +1,6 @@
 module EventbriteSDK
   class Event < Resource
-    endpoint 'events/:id', primary_key: :id
+    resource_path 'events/:id', primary_key: :id
 
     attributes_prefix 'event'
 
@@ -8,8 +8,11 @@ module EventbriteSDK
     belongs_to :organizer,
                object_class: 'Organizer',
                mappings: { id: :organizer_id }
+    belongs_to :venue,
+               object_class: 'Venue',
+               mappings: { id: :venue_id }
 
-    schema_attributes do
+    schema_definition do
       string 'name.html'
       string 'description.html'
       string 'organizer_id'

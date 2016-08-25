@@ -1,12 +1,12 @@
 module EventbriteSDK
   class Organizer < Resource
-    endpoint 'organizers/:id', primary_key: :id
+    resource_path 'organizers/:id', primary_key: :id
 
     attributes_prefix 'organizer'
 
     has_many :events, object_class: 'Event'
 
-    schema_attributes do
+    schema_definition do
       string 'name'
       string 'description.html'
       string 'long_description.html'

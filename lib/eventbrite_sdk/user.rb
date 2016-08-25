@@ -1,11 +1,11 @@
 module EventbriteSDK
   class User < Resource
-    endpoint 'users/:id', primary_key: :id
+    resource_path 'users/:id', primary_key: :id
 
     has_many :owned_events, object_class: 'Event', key: :events
     has_many :organizers, object_class: 'Organizer', key: :organizers
 
-    schema_attributes do
+    schema_definition do
       string 'name'
       string 'first_name'
       string 'last_name'

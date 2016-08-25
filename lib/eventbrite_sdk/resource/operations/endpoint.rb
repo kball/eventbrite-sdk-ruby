@@ -3,34 +3,32 @@ module EventbriteSDK
     module Operations
       module Endpoint
         module ClassMethods
-          attr_reader :endpoint, :endpoint_opts
+          attr_reader :path, :path_opts
 
           def retrieve(params, request = EventbriteSDK)
-            new request.get(url: url_endpoint_from_params(params))
-          end
-
-          def endpoint(endpoint, opts = {})
-            @endpoint_opts = opts
-            @endpoint = endpoint
-          end
-
-          def endpoint_path(value)
-            @endpoint.gsub(":#{endpoint_opts[:primary_key]}", value)
-          end
-
-          def url_endpoint_from_params(params)
-            params.reduce(@endpoint) do |resource_endpoint, (key, value)|
-              resource_endpoint.gsub(":#{key}", value)
+            url_path = params.reduce(@path) do |path, (key, value)|
+              path.gsub(":#{key}", value.to_s)
             end
+
+            new request.get(url: url_path)
+          end
+
+          def resource_path(path, opts = {})
+            @path = path
+            @path_opts = opts
+          end
+
+          def generate_path(value)
+            @path.gsub(":#{path_opts[:primary_key]}", value)
           end
         end
 
         module InstanceMethods
-          def endpoint_path(postfixed_path = '')
+          def path(postfixed_path = '')
             sub_value = primary_key || ''
 
             # Strip off any trailing slash as EventbriteSDK.request adds it
-            full_path = self.class.endpoint_path(sub_value).gsub(/\/$/, '')
+            full_path = self.class.generate_path(sub_value).gsub(/\/$/, '')
 
             if postfixed_path.empty?
               full_path
@@ -39,8 +37,8 @@ module EventbriteSDK
             end
           end
 
-          def full_endpoint_url(sdk = EventbriteSDK)
-            sdk.url endpoint_path
+          def full_url(request = EventbriteSDK)
+            request.url path
           end
         end
 

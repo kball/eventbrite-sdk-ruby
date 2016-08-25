@@ -2,6 +2,7 @@ module EventbriteSDK
   class Resource
     include Operations::AttributeSchema
     include Operations::Endpoint
+    include Operations::Relationships
 
     attr_reader :primary_key
 
@@ -11,33 +12,8 @@ module EventbriteSDK
       end
     end
 
-    def self.belongs_to(rel_method, object_class: nil, mappings: nil)
-      define_method(rel_method) do
-        keys = mappings.each_with_object({}) do | (key, method), hash|
-          hash[key.to_s] = public_send(method)
-        end
-
-        @relationships[rel_method] ||= begin
-            EventbriteSDK.resource(object_class).retrieve(keys)
-        end
-      end
-    end
-
-    def self.has_many(rel_method, object_class: nil, key: nil)
-      define_method(rel_method) do
-        key ||= rel_method
-
-        @relationships[rel_method] ||= ResourceList.new(
-          url_base: endpoint_path(rel_method),
-          object_class: EventbriteSDK.resource(object_class),
-          key: key
-        )
-      end
-    end
-
     def initialize(hydrated_attrs = {})
       reload hydrated_attrs
-      @relationships = {}
     end
 
     def new?
@@ -46,7 +22,7 @@ module EventbriteSDK
 
     def refresh!(request = EventbriteSDK)
       if primary_key
-        reload request.get(url: endpoint_path)
+        reload request.get(url: path)
       else
         false
       end
@@ -58,7 +34,7 @@ module EventbriteSDK
 
     def save(postfixed_path = '', request = EventbriteSDK)
       if changed? || !postfixed_path.empty?
-        response = request.post(url: endpoint_path(postfixed_path),
+        response = request.post(url: path(postfixed_path),
                                 payload: attrs.payload(self.class.prefix))
 
         reload(response)
@@ -67,13 +43,22 @@ module EventbriteSDK
       end
     end
 
+    def list_class
+      ResourceList
+    end
+
     private
+
+    def resource_class_from_string(klass)
+      EventbriteSDK.const_get(klass)
+    end
 
     def reload(hydrated_attrs = {})
       @primary_key = hydrated_attrs.delete(
-        self.class.endpoint_opts[:primary_key].to_s
+        self.class.path_opts[:primary_key].to_s
       )
-      build_attrs(hydrated_attrs, self.class.schema)
+
+      build_attrs(hydrated_attrs)
     end
   end
 end

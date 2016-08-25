@@ -103,7 +103,7 @@ module EventbriteSDK
 
       context 'when given schema that rejects attributes' do
         it 'raises InvalidAttribute' do
-          schema = Resource::Schema.new('schema')
+          schema = Resource::SchemaDefinition.new('schema')
 
           attrs = described_class.new({}, schema)
 

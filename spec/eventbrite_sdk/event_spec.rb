@@ -3,7 +3,6 @@ require 'spec_helper'
 module EventbriteSDK
   RSpec.describe Event do
     before do
-      # TODO mock once we have some real responses to store as fixtures
       EventbriteSDK.token = 'token'
     end
 
@@ -44,7 +43,7 @@ module EventbriteSDK
 
     describe '#cancel' do
       context 'when primary_key exists' do
-        it 'calls save with the called method name' do
+        it 'calls save with `cancel`' do
           event = described_class.new('id' => '1')
           allow(event).to receive(:save)
 

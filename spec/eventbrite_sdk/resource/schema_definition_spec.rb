@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module EventbriteSDK
-  RSpec.describe Resource::Schema do
+  RSpec.describe Resource::SchemaDefinition do
     subject { described_class.new('schema') }
 
     describe 'dynamically defined type methods: boolean datetime integer string' do

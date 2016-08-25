@@ -2,33 +2,9 @@ require 'spec_helper'
 
 module EventbriteSDK
   RSpec.describe Resource do
-    describe '.endpoint' do
-      it 'sets a eigenclass instance var called endpoint' do
-        described_class.endpoint 'endpoint'
-
-        expect(described_class.instance_variable_get(:@endpoint)).
-          to eq('endpoint')
-      end
-    end
-
-    describe '.url_endpoint_from_params' do
-      it 'replaces found tokens with their given values' do
-        described_class.endpoint ':a/:b/c/:d'
-
-        result = described_class.url_endpoint_from_params(
-          a: 'aye',
-          b: 'bee',
-          c: 'IGNORED',
-          d: 'dee',
-        )
-
-        expect(result).to eq('aye/bee/c/dee')
-      end
-    end
-
     describe '#id' do
       it 'returns value when hydrated attributes contains id' do
-        described_class.endpoint 'events/:id', primary_key: :id
+        described_class.resource_path 'events/:id', primary_key: :id
 
         resource = described_class.new('id' => '1234')
 
@@ -36,7 +12,7 @@ module EventbriteSDK
       end
 
       it 'returns nil when hydrated attributes does not contain id' do
-        described_class.endpoint 'events/:venue_id', primary_key: :venue_id
+        described_class.resource_path 'events/:venue_id', primary_key: :venue_id
 
         resource = described_class.new('something' => '1234')
 
@@ -46,7 +22,7 @@ module EventbriteSDK
 
     describe '#new?' do
       it 'returns true when primary_key is falsey' do
-        described_class.endpoint 'events/:venue_id', primary_key: :venue_id
+        described_class.resource_path 'events/:venue_id', primary_key: :venue_id
 
         resource = described_class.new('something' => '1234')
 
@@ -54,43 +30,11 @@ module EventbriteSDK
       end
 
       it 'returns false when primary_key is truthy' do
-        described_class.endpoint 'events/:venue_id', primary_key: :venue_id
+        described_class.resource_path 'events/:venue_id', primary_key: :venue_id
 
         resource = described_class.new('venue_id' => '1234')
 
         expect(resource).not_to be_new
-      end
-    end
-
-    describe '#endpoint_path' do
-      context 'when primary_key exists' do
-        it 'contains the primary key in the url fragment' do
-          described_class.endpoint 'events/:id', primary_key: :id
-
-          resource = described_class.new('id' => '1234')
-
-          expect(resource.endpoint_path).to eq('events/1234')
-        end
-      end
-
-      context 'when primary_key is nil' do
-        it 'does not contain the primary key in the url fragment' do
-          described_class.endpoint 'events/:id', primary_key: :id
-
-          resource = described_class.new('not' => '1234')
-
-          expect(resource.endpoint_path).to eq('events')
-        end
-      end
-
-      context 'when given a postfix path' do
-        it 'postfixes the endpoint' do
-          described_class.endpoint 'events/:id', primary_key: :id
-
-          resource = described_class.new('id' => '1234')
-
-          expect(resource.endpoint_path('postfix')).to eq('events/1234/postfix')
-        end
       end
     end
 
@@ -116,7 +60,7 @@ module EventbriteSDK
 
       context 'when primary_key is nil' do
         it 'returns false'  do
-          described_class.endpoint 'events/:id', primary_key: :id
+          described_class.resource_path 'events/:id', primary_key: :id
 
           resource = described_class.new('anything' => '1234')
 
@@ -127,11 +71,11 @@ module EventbriteSDK
       private
 
       class DummyResource < Resource
-        endpoint 'events/:id', primary_key: :id
+        resource_path 'events/:id', primary_key: :id
 
         attributes_prefix 'event'
 
-        schema_attributes do
+        schema_definition do
           string 'name.html'
         end
       end
@@ -147,10 +91,10 @@ module EventbriteSDK
           it 'sets the returned id, and resets changes' do
             name = "Test event #{SecureRandom.hex(4)}"
 
-            described_class.endpoint 'events/:id', primary_key: :id
+            described_class.resource_path 'events/:id', primary_key: :id
             described_class.attributes_prefix 'event'
             allow(described_class).to receive(:schema).and_return(
-              NullSchema.new
+              Resource::NullSchemaDefinition.new
             )
 
             stub_post_with_response(
@@ -213,7 +157,7 @@ module EventbriteSDK
 
       context 'when given a postfix_path' do
         it 'passes it to endpoint_path' do
-          described_class.endpoint 'events/:id', primary_key: :id
+          described_class.resource_path 'events/:id', primary_key: :id
           resource = described_class.new('id' => '1234')
           repo = double(post: { 'id' => '1234' })
 

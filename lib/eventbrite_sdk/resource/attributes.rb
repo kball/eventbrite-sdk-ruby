@@ -9,7 +9,7 @@ module EventbriteSDK
         end
       end
 
-      def initialize(hydrated_attrs = {}, schema = NullSchema.new)
+      def initialize(hydrated_attrs = {}, schema = NullSchemaDefinition.new)
         @attrs = hydrated_attrs
         @schema = schema
         @changes = {}
@@ -49,6 +49,14 @@ module EventbriteSDK
         true
       end
 
+      # Provides changeset in a format that can be thrown at an endpoint
+      #
+      # prefix: This is needed due to inconsistencies in the EB API
+      #         Sometimes there's a prefix, sometimes there's not,
+      #         sometimes it's singular, sometimes it's plural.
+      #         Once the API gets a bit more nomalized we can remove this
+      #         alltogether and infer a prefix based
+      #         on the class name of the resource
       def payload(prefix = nil)
         changes.each_with_object({}) do |(attribute_key, (_, value)), payload|
           key = if prefix

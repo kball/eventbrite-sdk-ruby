@@ -1,6 +1,6 @@
 module EventbriteSDK
   class Resource
-    class Schema
+    class SchemaDefinition
       def initialize(resource_name)
         @resource_name = resource_name
         @read_only_keys = Set.new

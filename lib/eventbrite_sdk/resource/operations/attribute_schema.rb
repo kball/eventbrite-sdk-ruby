@@ -5,8 +5,8 @@ module EventbriteSDK
         module ClassMethods
           attr_reader :prefix, :schema
 
-          def schema_attributes(&block)
-            @schema = Schema.new(name)
+          def schema_definition(&block)
+            @schema = SchemaDefinition.new(name)
             @schema.instance_eval(&block)
           end
 
@@ -16,20 +16,12 @@ module EventbriteSDK
         end
 
         module InstanceMethods
-          def changes
-            attrs.changes
+          %i(changes changed?).each do |method|
+            define_method(method) { attrs.public_send(method) }
           end
 
-          def changed?
-            attrs.changed?
-          end
-
-          def [](key)
-            attrs.public_send(key)
-          end
-
-          def assign_attributes(new_attrs)
-            attrs.assign_attributes(new_attrs)
+          %i([] assign_attributes).each do |method|
+            define_method(method) { |arg| attrs.public_send(method, arg) }
           end
 
           def method_missing(method_name, *_args, &_block)
@@ -44,8 +36,8 @@ module EventbriteSDK
             attrs.respond_to_missing?(method_name) || super
           end
 
-          def build_attrs(new_attrs, schema)
-            @attrs = Attributes.new(new_attrs, schema)
+          def build_attrs(new_attrs)
+            @attrs = Attributes.new(new_attrs, self.class.schema)
           end
 
           private
@@ -55,7 +47,7 @@ module EventbriteSDK
 
         def self.included(receiver)
           receiver.extend ClassMethods
-          receiver.send(:include, InstanceMethods)
+          receiver.prepend InstanceMethods
         end
       end
     end
