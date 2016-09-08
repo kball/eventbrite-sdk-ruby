@@ -1,0 +1,10 @@
+{
+  "resource_uri": "https://www.eventbriteapi.com/v3/webhooks/239963/",
+  "endpoint_url": "http://httpbin.org/post",
+  "actions": ["order.placed", "event.published", "event.unpublished"],
+  "id": "239963",
+  "user_id": "165902382973",
+  "created": "2016-09-08T12:39:31Z",
+  "event_id": null
+}
+
