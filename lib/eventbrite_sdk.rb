@@ -18,6 +18,7 @@ require 'eventbrite_sdk/order'
 require 'eventbrite_sdk/organizer'
 require 'eventbrite_sdk/user'
 require 'eventbrite_sdk/webhook'
+require 'eventbrite_sdk/venue'
 
 module EventbriteSDK
   BASE = "https://www.eventbriteapi.com/v#{VERSION.split('.').first}".freeze
