@@ -12,11 +12,6 @@ module EventbriteSDK
     describe '#retrieve' do
       context 'when the request payload contains the key given' do
         it 'hydrates objects within a given key with then given object_class' do
-          list = described_class.new(
-            url_base: 'url',
-            object_class: Event,
-            key: :events
-          )
           payload = {
             'events' => [
               { 'id' => '1' },
@@ -24,11 +19,21 @@ module EventbriteSDK
               { 'id' => '3' },
             ]
           }
+
           request = double('Request', get: payload)
 
-          list.retrieve(request)
+          list = described_class.new(
+            url_base: 'url',
+            object_class: Event,
+            key: :events,
+            request: request,
+          )
 
-          expect(request).to have_received(:get).with(url: 'url')
+          list.retrieve
+
+          expect(request).to have_received(:get).with(
+            url: 'url', query: { page: 1 }
+          )
           expect(list.first).to be_an_instance_of(Event)
 
           expect(list[0].primary_key).to eq('1')
@@ -39,11 +44,6 @@ module EventbriteSDK
 
       context 'when the request payload does not contain key given' do
         it 'hydrates objects within a given key with given object_class' do
-          list = described_class.new(
-            url_base: 'url',
-            object_class: 'Event',
-            key: :events
-          )
           payload = {
             'nope' => [
               { 'id' => '1' },
@@ -51,11 +51,21 @@ module EventbriteSDK
               { 'id' => '3' },
             ]
           }
+
           request = double('Request', get: payload)
 
-          list.retrieve(request)
+          list = described_class.new(
+            url_base: 'url',
+            object_class: Event,
+            key: :events,
+            request: request,
+          )
 
-          expect(request).to have_received(:get).with(url: 'url')
+          list.retrieve
+
+          expect(request).to have_received(:get).with(
+            url: 'url', query: { page: 1 }
+          )
           expect(list).to be_empty
         end
       end
@@ -63,12 +73,6 @@ module EventbriteSDK
 
     context 'pagination' do
       it 'returns the value provided in the requests `pagination` payload' do
-        list = described_class.new(
-          url_base: 'url',
-          object_class: Event,
-          key: :events
-        )
-
         pagination = {
           'pagination' => {
             'object_count' => 13,
@@ -78,12 +82,114 @@ module EventbriteSDK
           }
         }
 
-        list.retrieve double('Request', get: pagination)
+        request = double('Request', get: pagination)
+
+        list = described_class.new(
+          url_base: 'url',
+          object_class: Event,
+          key: :events,
+          request: request,
+        )
+
+        list.retrieve
 
         expect(list.object_count).to eq(13)
         expect(list.page_number).to eq(2)
         expect(list.page_size).to eq(50)
         expect(list.page_count).to eq(2)
+      end
+
+      it 'retrieves page number when calling #page' do
+        payload = {
+          'events' => [
+            { 'id' => '1' },
+            { 'id' => '2' },
+            { 'id' => '3' },
+          ]
+        }
+
+        request = double('Request', get: payload)
+
+        list = described_class.new(
+          url_base: 'url',
+          object_class: Event,
+          key: :events,
+          request: request,
+        )
+
+        allow(list).to receive(:page=)
+
+        list.page(2)
+
+        expect(request).to have_received(:get).with(
+          url: 'url', query: { page: 2 }
+        )
+      end
+
+      it 'retrieves next page when calling #next_page' do
+        page_number = 1
+        pagination = {
+          'pagination' => {
+            'object_count' => 130,
+            'page_number' => page_number,
+            'page_size' => 50,
+            'page_count' => 2,
+          }
+        }
+
+        request = double('Request', get: pagination.dup)
+
+        list = described_class.new(
+          url_base: 'url',
+          object_class: Event,
+          key: :events,
+          request: request,
+        )
+
+        list.retrieve
+        list.next_page
+
+        expect(request).to have_received(:get).with(
+          url: 'url',
+          query: { page: page_number }
+        )
+        expect(request).to have_received(:get).with(
+          url: 'url',
+          query: { page: page_number + 1 }
+        )
+      end
+
+      it 'retrieves previous page when calling #prev_page' do
+        page_number = 2
+        pagination = {
+          'pagination' => {
+            'object_count' => 130,
+            'page_number' => page_number,
+            'page_size' => 50,
+            'page_count' => 2,
+          }
+        }
+
+        request = double('Request', get: pagination.dup)
+
+        list = described_class.new(
+          url_base: 'url',
+          object_class: Event,
+          key: :events,
+          request: request,
+        )
+
+        list.page(2)
+        list.prev_page
+
+        expect(request).to have_received(:get).with(
+          url: 'url',
+          query: { page: page_number }
+        )
+        expect(request).to have_received(:get).with(
+          url: 'url',
+          query: { page: page_number - 1 }
+        )
       end
     end
   end

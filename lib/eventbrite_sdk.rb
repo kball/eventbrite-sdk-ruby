@@ -63,6 +63,8 @@ module EventbriteSDK
           accept: :json,
         }
 
+        request[:headers][:params] = params[:query] if params[:query]
+
         request[:payload] = params[:payload] if params[:method] == :post
 
         response = RestClient::Request.execute(request)
