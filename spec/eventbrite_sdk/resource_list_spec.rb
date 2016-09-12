@@ -192,5 +192,39 @@ module EventbriteSDK
         )
       end
     end
+
+    describe '#to_json' do
+      it 'returns a JSON list of objects' do
+        payload = {
+          'events' => [
+            { 'id' => '1' },
+            { 'id' => '2' },
+            { 'id' => '3' },
+          ],
+          'pagination' => {
+            'object_count' => 3,
+            'page_number' => 1,
+            'page_size' => 50,
+            'page_count' => 1,
+          }
+        }
+
+        request = double('Request', get: payload)
+
+        list = described_class.new(
+          url_base: 'url',
+          object_class: Event,
+          key: :events,
+          request: request,
+        )
+
+        list.retrieve
+
+        list_json = JSON.parse(list.to_json)
+        payload_json = JSON.parse(payload.to_json)
+
+        expect(list_json).to eq(payload_json)
+      end
+    end
   end
 end

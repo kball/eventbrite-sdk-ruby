@@ -48,6 +48,10 @@ module EventbriteSDK
       define_method(method) { pagination[method] }
     end
 
+    def to_json(opts = {})
+      { key => objects.map(&:to_h), 'pagination' => @pagination }.to_json(opts)
+    end
+
     private
 
     def pagination
