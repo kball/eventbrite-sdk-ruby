@@ -3,6 +3,7 @@ module EventbriteSDK
     include Operations::AttributeSchema
     include Operations::Endpoint
     include Operations::Relationships
+    include ActiveModel::Serialization
 
     attr_reader :primary_key
 
