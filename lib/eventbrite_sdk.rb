@@ -35,14 +35,23 @@ module EventbriteSDK
       message: 'unauthorized request',
     }
   }.freeze
-  THREAD_KEY = :eb_api_token
+  THREAD_EB_API_TOKEN_KEY = :eb_api_token
+  THREAD_BASE_URL_KEY = :base_url
 
   def self.token
-    Thread.current[THREAD_KEY]
+    Thread.current[THREAD_EB_API_TOKEN_KEY]
   end
 
   def self.token=(api_token)
-    Thread.current[THREAD_KEY] = api_token
+    Thread.current[THREAD_EB_API_TOKEN_KEY] = api_token
+  end
+
+  def self.base_url
+    Thread.current[THREAD_BASE_URL_KEY] || BASE
+  end
+
+  def self.base_url=(url)
+    Thread.current[THREAD_BASE_URL_KEY] = url
   end
 
   def self.get(params)
@@ -80,6 +89,6 @@ module EventbriteSDK
   end
 
   def self.url(path)
-    "#{BASE}/#{path}/"
+    "#{base_url}/#{path}/"
   end
 end
