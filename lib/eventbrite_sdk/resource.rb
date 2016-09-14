@@ -70,7 +70,7 @@ module EventbriteSDK
     end
 
     def call_api_action(api_action)
-      !new? && save(api_action.to_s)
+      !new? && save(api_action_real_name(api_action))
     end
 
     def method_missing(method_name, *_args, &_block)
@@ -86,7 +86,24 @@ module EventbriteSDK
     end
 
     def api_action_defined?(method_name)
-      self.class.api_actions.include?(method_name)
+      self.class.api_actions.include?(method_name) ||
+        api_action_name_aliased?(method_name)
+    end
+
+    def api_action_name_aliased?(api_action)
+      self.class.api_actions.any? { |action|
+        action.is_a?(Hash) && action.key?(api_action)
+      }
+    end
+
+    def api_action_real_name(api_action)
+      if api_action_name_aliased? api_action
+        self.class.api_actions.find { |action|
+          action.is_a?(Hash) && action.key?(api_action)
+        }[api_action]
+      else
+        api_action
+      end.to_s
     end
   end
 end

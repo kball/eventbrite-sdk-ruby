@@ -59,7 +59,7 @@ module EventbriteSDK
       end
 
       context 'when primary_key is nil' do
-        it 'returns false'  do
+        it 'returns false' do
           described_class.resource_path 'events/:id', primary_key: :id
 
           resource = described_class.new('anything' => '1234')
@@ -167,6 +167,38 @@ module EventbriteSDK
             url: 'events/1234/postfix', payload: {}
           )
         end
+      end
+    end
+
+    describe 'dynamic instance methods' do
+      before do
+        described_class.resource_path 'events/:id', primary_key: :id
+      end
+
+      it 'should define new_method if included in define_api_actions' do
+        resource = described_class.new('id' => '1')
+        allow(resource).to receive(:save)
+
+        expect do
+          resource.new_method
+        end.to raise_error(NoMethodError)
+
+        described_class.define_api_actions :new_method
+
+        resource.new_method
+
+        expect(resource).to have_received(:save).with('new_method')
+      end
+
+      it 'should alias new_method if included in define_api_actions' do
+        resource = described_class.new('id' => '1')
+        allow(resource).to receive(:save)
+
+        described_class.define_api_actions(new_method: :another_method_name)
+
+        resource.new_method
+
+        expect(resource).to have_received(:save).with('another_method_name')
       end
     end
   end
