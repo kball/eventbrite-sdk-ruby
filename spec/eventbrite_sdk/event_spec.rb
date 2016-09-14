@@ -42,7 +42,7 @@ module EventbriteSDK
     end
 
     describe '#cancel' do
-      context 'when primary_key exists' do
+      context 'when id exists' do
         it 'calls save with `cancel`' do
           event = described_class.new('id' => '1')
           allow(event).to receive(:save)
@@ -53,7 +53,7 @@ module EventbriteSDK
         end
       end
 
-      context 'when primary_key is absent' do
+      context 'when id is absent' do
         it 'returns false' do
           event = described_class.new
           allow(event).to receive(:save)
@@ -73,7 +73,7 @@ module EventbriteSDK
     end
 
     describe '#publish' do
-      context 'when primary_key exists' do
+      context 'when id exists' do
         it 'calls save with the called method name' do
           event = described_class.new('id' => '1')
           allow(event).to receive(:save)
@@ -84,7 +84,7 @@ module EventbriteSDK
         end
       end
 
-      context 'when primary_key is absent' do
+      context 'when id is absent' do
         it 'returns false' do
           event = described_class.new
           allow(event).to receive(:save)
@@ -95,7 +95,7 @@ module EventbriteSDK
     end
 
     describe '#unpublish' do
-      context 'when primary_key exists' do
+      context 'when id exists' do
         it 'calls save with the called method name' do
           event = described_class.new('id' => '1')
           allow(event).to receive(:save)
@@ -106,7 +106,7 @@ module EventbriteSDK
         end
       end
 
-      context 'when primary_key is absent' do
+      context 'when id is absent' do
         it 'returns false' do
           event = described_class.new
           allow(event).to receive(:save)

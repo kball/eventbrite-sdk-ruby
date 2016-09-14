@@ -13,22 +13,28 @@ module EventbriteSDK
             new request.get(url: url_path)
           end
 
-          def resource_path(path, opts = {})
+          def resource_path(path)
             @path = path
-            @path_opts = opts
-          end
 
-          def generate_path(value)
-            @path.gsub(":#{path_opts[:primary_key]}", value)
-          end
+            path.scan(/:\w+/).each do |path_attr|
+              attr = path_attr.delete(':').to_sym
+
+              define_method(attr) do
+                @attrs[attr] if @attrs.respond_to?(attr)
+              end
+            end
+         end
         end
 
         module InstanceMethods
           def path(postfixed_path = '')
-            sub_value = primary_key || ''
+            resource_path = self.class.path.dup
+            tokens = resource_path.scan(/:\w+/)
 
-            # Strip off any trailing slash as EventbriteSDK.request adds it
-            full_path = self.class.generate_path(sub_value).gsub(/\/$/, '')
+            full_path = tokens.reduce(resource_path) do |path_frag, token|
+              method = token.delete(':')
+              path_frag.gsub(token, send(method).to_s)
+            end
 
             if postfixed_path.empty?
               full_path

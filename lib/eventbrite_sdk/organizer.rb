@@ -1,6 +1,6 @@
 module EventbriteSDK
   class Organizer < Resource
-    resource_path 'organizers/:id', primary_key: :id
+    resource_path 'organizers/:id'
 
     attributes_prefix 'organizer'
 

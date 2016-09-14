@@ -1,10 +1,8 @@
 module EventbriteSDK
   class Order < Resource
-    resource_path 'orders/:id', primary_key: :id
+    resource_path 'orders/:id'
 
-    belongs_to :event,
-               object_class: 'Event',
-               mappings: { id: :event_id }
+    belongs_to :event, object_class: 'Event'
 
     schema_definition do
       string 'name'

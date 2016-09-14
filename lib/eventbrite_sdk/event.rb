@@ -6,17 +6,13 @@ module EventbriteSDK
     # POSTS to event/:id/(cancel|publish|unpublish)
     define_api_actions :cancel, :publish, :unpublish
 
-    resource_path 'events/:id', primary_key: :id
+    resource_path 'events/:id'
 
     attributes_prefix 'event'
 
     has_many :orders, object_class: 'Order'
-    belongs_to :organizer,
-               object_class: 'Organizer',
-               mappings: { id: :organizer_id }
-    belongs_to :venue,
-               object_class: 'Venue',
-               mappings: { id: :venue_id }
+    belongs_to :organizer, object_class: 'Organizer'
+    belongs_to :venue, object_class: 'Venue'
 
     schema_definition do
       string 'name.html'

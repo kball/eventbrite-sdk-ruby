@@ -1,6 +1,6 @@
 module EventbriteSDK
   class Webhook < Resource
-    resource_path 'webhooks/:id', primary_key: :id
+    resource_path 'webhooks/:id'
 
     schema_definition do
       string 'endpoint_url'

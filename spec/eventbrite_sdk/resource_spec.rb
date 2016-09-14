@@ -4,35 +4,35 @@ module EventbriteSDK
   RSpec.describe Resource do
     describe '#id' do
       it 'returns value when hydrated attributes contains id' do
-        described_class.resource_path 'events/:id', primary_key: :id
+        described_class.resource_path 'events/:id'
 
         resource = described_class.new('id' => '1234')
 
-        expect(resource.primary_key).to eq('1234')
+        expect(resource.id).to eq('1234')
       end
 
       it 'returns nil when hydrated attributes does not contain id' do
-        described_class.resource_path 'events/:venue_id', primary_key: :venue_id
+        described_class.resource_path 'events/:venue_id'
 
         resource = described_class.new('something' => '1234')
 
-        expect(resource.primary_key).to be_nil
+        expect(resource.venue_id).to be_nil
       end
     end
 
     describe '#new?' do
-      it 'returns true when primary_key is falsey' do
-        described_class.resource_path 'events/:venue_id', primary_key: :venue_id
+      it 'returns true when id is falsey' do
+        described_class.resource_path 'events/:id'
 
         resource = described_class.new('something' => '1234')
 
         expect(resource).to be_new
       end
 
-      it 'returns false when primary_key is truthy' do
-        described_class.resource_path 'events/:venue_id', primary_key: :venue_id
+      it 'returns false when id is truthy' do
+        described_class.resource_path 'events/:id'
 
-        resource = described_class.new('venue_id' => '1234')
+        resource = described_class.new('id' => '1234')
 
         expect(resource).not_to be_new
       end
@@ -43,7 +43,7 @@ module EventbriteSDK
         EventbriteSDK.token = 'token'
       end
 
-      context 'when a primary_key exists' do
+      context 'when a id exists' do
         it 'reloads the instance from the return of the api' do
           stub_get(path: 'events/1', fixture: :event_read)
 
@@ -58,9 +58,9 @@ module EventbriteSDK
         end
       end
 
-      context 'when primary_key is nil' do
-        it 'returns false' do
-          described_class.resource_path 'events/:id', primary_key: :id
+      context 'when id is nil' do
+        it 'returns false'  do
+          described_class.resource_path 'events/:id'
 
           resource = described_class.new('anything' => '1234')
 
@@ -71,7 +71,7 @@ module EventbriteSDK
       private
 
       class DummyResource < Resource
-        resource_path 'events/:id', primary_key: :id
+        resource_path 'events/:id'
 
         attributes_prefix 'event'
 
@@ -91,7 +91,7 @@ module EventbriteSDK
           it 'sets the returned id, and resets changes' do
             name = "Test event #{SecureRandom.hex(4)}"
 
-            described_class.resource_path 'events/:id', primary_key: :id
+            described_class.resource_path 'events/:id'
             described_class.attributes_prefix 'event'
             allow(described_class).to receive(:schema).and_return(
               Resource::NullSchemaDefinition.new
@@ -119,7 +119,7 @@ module EventbriteSDK
 
             expect(resource.save).to eq(true)
 
-            expect(resource.primary_key).not_to be_nil
+            expect(resource.id).not_to be_nil
             expect(resource.name.html).to eq(name)
             expect(resource).not_to be_new
             expect(resource).not_to be_changed
@@ -127,7 +127,7 @@ module EventbriteSDK
         end
       end
 
-      context 'when a resource that has a primary_key' do
+      context 'when a resource that has a id' do
         it 'rehydrates the instance with the response of the endpoint' do
           name = "Test event #{SecureRandom.hex(4)}"
           stub_get(
@@ -157,7 +157,7 @@ module EventbriteSDK
 
       context 'when given a postfix_path' do
         it 'passes it to endpoint_path' do
-          described_class.resource_path 'events/:id', primary_key: :id
+          described_class.resource_path 'events/:id'
           resource = described_class.new('id' => '1234')
           repo = double(post: { 'id' => '1234' })
 
@@ -172,7 +172,7 @@ module EventbriteSDK
 
     describe 'dynamic instance methods' do
       before do
-        described_class.resource_path 'events/:id', primary_key: :id
+        described_class.resource_path 'events/:id'
       end
 
       it 'should define new_method if included in define_api_actions' do

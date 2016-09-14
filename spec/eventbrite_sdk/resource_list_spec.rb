@@ -36,9 +36,9 @@ module EventbriteSDK
           )
           expect(list.first).to be_an_instance_of(Event)
 
-          expect(list[0].primary_key).to eq('1')
-          expect(list[1].primary_key).to eq('2')
-          expect(list[2].primary_key).to eq('3')
+          expect(list[0].id).to eq('1')
+          expect(list[1].id).to eq('2')
+          expect(list[2].id).to eq('3')
         end
       end
 

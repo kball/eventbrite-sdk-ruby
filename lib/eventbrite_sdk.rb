@@ -68,7 +68,7 @@ module EventbriteSDK
       begin
         request = {
           method: params[:method],
-          url: url(params[:url]),
+          url: url(params[:url].gsub(/\/$/, '')),
           headers: { 'Authorization' => "Bearer #{token}" },
           accept: :json,
         }

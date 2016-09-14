@@ -17,27 +17,49 @@ module EventbriteSDK
         end
 
         describe '.resource_path' do
-          it 'sets instance vars' do
+          it 'sets singletone instance vars' do
             test_class = Class.new { include Endpoint }
-            test_class.resource_path 'path', 'path_opts'
+            test_class.resource_path 'path'
 
             expect(test_class.path).to eq('path')
-            expect(test_class.path_opts).to eq('path_opts')
           end
-        end
 
-        describe '.generate_path' do
-          it 'subs out the primary_key with given value' do
-            expect(TestEndpoint.generate_path('id')).to eq('test/id')
+          it 'sets attr_accessor on each token in given path' do
+            test_class = Class.new do
+              include Endpoint
+              resource_path '/:one/:two/:three'
+            end
+
+            instance = test_class.new
+
+            expect(instance.respond_to?(:one)).to eq(true)
+            expect(instance.respond_to?(:two)).to eq(true)
+            expect(instance.respond_to?(:three)).to eq(true)
           end
         end
 
         describe '#path' do
+          context 'when given a resource without surrogate keys' do
+            it 'returns a path with the values injected' do
+              endpoint = TestEndpoint.new('nothing')
+
+              expect(endpoint.path).to eq('test/id')
+            end
+          end
+
+          context 'when given a resource with surrogate keys' do
+            it 'returns a path with the values injected' do
+              endpoint = TestNestedEndpoint.new('nothing')
+
+              expect(endpoint.path).to eq('nested/nested/test/id')
+            end
+          end
+
           context 'when given an optional postfixed_path' do
             it 'postfixes the path with the given string' do
               endpoint = TestEndpoint.new('nothing')
 
-              expect(endpoint.path('post')).to eq('test/primary_key/post')
+              expect(endpoint.path('post')).to eq('test/id/post')
             end
           end
 
@@ -45,7 +67,7 @@ module EventbriteSDK
             it 'postfixes the path with the given string' do
               endpoint = TestEndpoint.new('nothing')
 
-              expect(endpoint.path).to eq('test/primary_key')
+              expect(endpoint.path).to eq('test/id')
             end
           end
         end
@@ -68,14 +90,34 @@ module EventbriteSDK
 
           attr_reader :payload
 
-          resource_path 'test/:id', primary_key: :id
+          resource_path 'test/:id'
 
           def initialize(payload)
             @payload = payload
           end
 
-          def primary_key
-            'primary_key'
+          def id
+            'id'
+          end
+        end
+
+        class TestNestedEndpoint
+          include Endpoint
+
+          attr_reader :payload
+
+          resource_path 'nested/:nested/test/:id'
+
+          def initialize(payload)
+            @payload = payload
+          end
+
+          def id
+            'id'
+          end
+
+          def nested
+            'nested'
           end
         end
       end

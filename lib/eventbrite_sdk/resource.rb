@@ -4,8 +4,6 @@ module EventbriteSDK
     include Operations::Endpoint
     include Operations::Relationships
 
-    attr_reader :primary_key
-
     def self.build(attrs)
       new.tap do |instance|
         instance.assign_attributes(attrs)
@@ -17,11 +15,11 @@ module EventbriteSDK
     end
 
     def new?
-      !@primary_key
+      !id
     end
 
     def refresh!(request = EventbriteSDK)
-      if primary_key
+      unless new?
         reload request.get(url: path)
       else
         false
@@ -62,10 +60,6 @@ module EventbriteSDK
     end
 
     def reload(hydrated_attrs = {})
-      @primary_key = hydrated_attrs.delete(
-        self.class.path_opts[:primary_key].to_s
-      )
-
       build_attrs(hydrated_attrs)
     end
 
