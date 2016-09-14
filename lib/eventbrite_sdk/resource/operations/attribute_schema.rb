@@ -33,7 +33,7 @@ module EventbriteSDK
           end
 
           def respond_to_missing?(method_name, _include_private = false)
-            attrs.respond_to_missing?(method_name) || super
+            attrs.respond_to?(method_name) || super
           end
 
           def build_attrs(new_attrs)
