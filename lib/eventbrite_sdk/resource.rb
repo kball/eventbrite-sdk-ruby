@@ -50,6 +50,14 @@ module EventbriteSDK
 
     private
 
+    def self.define_api_actions(*actions)
+      @api_actions = actions
+    end
+
+    def self.api_actions
+      @api_actions || []
+    end
+
     def resource_class_from_string(klass)
       EventbriteSDK.const_get(klass)
     end
@@ -60,6 +68,26 @@ module EventbriteSDK
       )
 
       build_attrs(hydrated_attrs)
+    end
+
+    def call_api_action(api_action)
+      !new? && save(api_action.to_s)
+    end
+
+    def method_missing(method_name, *_args, &_block)
+      if api_action_defined?(method_name)
+        call_api_action(method_name)
+      else
+        super
+      end
+    end
+
+    def respond_to_missing?(method_name, include_private = false)
+      api_action_defined?(method_name) || super
+    end
+
+    def api_action_defined?(method_name)
+      self.class.api_actions.include?(method_name)
     end
   end
 end

@@ -1,5 +1,11 @@
 module EventbriteSDK
   class Event < Resource
+    # Defines event#cancel, event#publish, and event#unpublish
+    #
+    # When an event has an id the POST is made, otherwise we return false
+    # POSTS to event/:id/(cancel|publish|unpublish)
+    define_api_actions :cancel, :publish, :unpublish
+
     resource_path 'events/:id', primary_key: :id
 
     attributes_prefix 'event'
@@ -38,16 +44,6 @@ module EventbriteSDK
       string 'created', read_only: true
       string 'changed', read_only: true
       string 'resource_uri', read_only: true
-    end
-
-    # Defines event#cancel, event#publish, and event#unpublish
-    #
-    # When an event has an id the POST is made, otherwise we return false
-    # POSTS to event/:id/(cancel|publish|unpublish)
-    %i(cancel publish unpublish).each do |method|
-      define_method(method) do
-        !new? && save(method.to_s)
-      end
     end
   end
 end
