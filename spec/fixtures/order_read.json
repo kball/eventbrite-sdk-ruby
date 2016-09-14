@@ -1,0 +1,45 @@
+{
+  "costs": {
+    "base_price": {
+      "display": "$5.62",
+      "currency": "USD",
+      "value": 562,
+      "major_value": "5.62"
+    },
+    "eventbrite_fee": {
+      "display": "$1.17",
+      "currency": "USD",
+      "value": 117,
+      "major_value": "1.17"
+    },
+    "gross": {
+      "display": "$7.00",
+      "currency": "USD",
+      "value": 700,
+      "major_value": "7.00"
+    },
+    "payment_fee": {
+      "display": "$0.21",
+      "currency": "USD",
+      "value": 21,
+      "major_value": "0.21"
+    },
+    "tax": {
+      "display": "$0.00",
+      "currency": "USD",
+      "value": 0,
+      "major_value": "0.00"
+    }
+  },
+  "resource_uri": "https://www.eventbriteapi.com/v3/orders/12345/",
+  "id": "12345",
+  "changed": "2016-04-27T17:52:12Z",
+  "created": "2016-04-27T17:52:12Z",
+  "name": "Emilio Tagua",
+  "first_name": "Emilio",
+  "last_name": "Tagua",
+  "email": "emilio@eventbrite.com",
+  "status": "placed",
+  "time_remaining": null,
+  "event_id": "24967032065"
+}
