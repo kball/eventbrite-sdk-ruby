@@ -8,6 +8,7 @@ module EventbriteSDK
     # POSTS to order/:id/(resend_confirmation_email|refunds)
     define_api_actions :resend_confirmation_email, { refund: :refunds }
 
+    has_many :attendees, object_class: 'Attendee'
     belongs_to :event, object_class: 'Event'
 
     schema_definition do

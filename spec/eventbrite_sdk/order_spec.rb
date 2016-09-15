@@ -10,10 +10,10 @@ module EventbriteSDK
       context 'when found' do
         it 'returns a new instance' do
           stub_endpoint(
-            path: 'orders/1234',
+            path: 'orders/12345',
             body: :order_read,
           )
-          order = described_class.retrieve id: '1234'
+          order = described_class.retrieve id: '12345'
 
           expect(order).to be_an_instance_of(described_class)
         end
@@ -82,6 +82,34 @@ module EventbriteSDK
           allow(order).to receive(:save)
 
           expect(order.refund).to eq(false)
+        end
+      end
+    end
+
+    describe '#attendees' do
+      context 'when order is new' do
+        it 'instantiates a new empty ResourceList' do
+          expect(subject.attendees).to be_an_instance_of(ResourceList)
+          expect(subject.attendees).to be_empty
+        end
+      end
+
+      context 'when order exists' do
+        it 'gets attendees list' do
+          stub_endpoint(
+            path: 'orders/12345',
+            body: :order_read,
+          )
+          stub_endpoint(
+            path: 'orders/12345/attendees/?page=1',
+            body: :attendees_read,
+          )
+
+          order = described_class.retrieve id: '12345'
+          expect(order.attendees.retrieve).to be_an_instance_of(ResourceList)
+          expect(order.attendees).to_not be_empty
+          expect(order.attendees.count).to eq(1)
+          expect(order.attendees.first).to be_an_instance_of(Attendee)
         end
       end
     end
