@@ -16,9 +16,10 @@ require 'eventbrite_sdk/resource'
 require 'eventbrite_sdk/event'
 require 'eventbrite_sdk/order'
 require 'eventbrite_sdk/organizer'
+require 'eventbrite_sdk/ticket_class'
 require 'eventbrite_sdk/user'
-require 'eventbrite_sdk/webhook'
 require 'eventbrite_sdk/venue'
+require 'eventbrite_sdk/webhook'
 
 module EventbriteSDK
   BASE = "https://www.eventbriteapi.com/v#{VERSION.split('.').first}".freeze
@@ -69,13 +70,15 @@ module EventbriteSDK
         request = {
           method: params[:method],
           url: url(params[:url].gsub(/\/$/, '')),
-          headers: { 'Authorization' => "Bearer #{token}" },
-          accept: :json,
+          headers: {
+            'Accept' => 'application/json',
+            'Authorization' => "Bearer #{token}",
+            'Content-Type' => 'application/json',
+          },
         }
 
         request[:headers][:params] = params[:query] if params[:query]
-
-        request[:payload] = params[:payload] if params[:method] == :post
+        request[:payload] = params[:payload].to_json if params[:method] == :post
 
         response = RestClient::Request.execute(request)
 

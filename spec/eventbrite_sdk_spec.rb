@@ -85,8 +85,11 @@ describe EventbriteSDK do
         expect(RestClient::Request).to have_received(:execute).with(
           method: :get,
           url: "#{described_class::BASE}/events/1/",
-          headers: { 'Authorization' => "Bearer #{token}" },
-          accept: :json,
+          headers: {
+            'Accept' => 'application/json',
+            'Authorization' => "Bearer #{token}",
+            'Content-Type' => 'application/json',
+          }
         )
       end
     end

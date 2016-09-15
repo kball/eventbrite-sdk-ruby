@@ -24,6 +24,12 @@ module EventbriteSDK
             define_method(method) { |arg| attrs.public_send(method, arg) }
           end
 
+          def build_attrs(new_attrs)
+            @attrs = Attributes.new(new_attrs, self.class.schema)
+          end
+
+          private
+
           def method_missing(method_name, *_args, &_block)
             if attrs.respond_to?(method_name)
               attrs.public_send(method_name)
@@ -35,12 +41,6 @@ module EventbriteSDK
           def respond_to_missing?(method_name, _include_private = false)
             attrs.respond_to?(method_name) || super
           end
-
-          def build_attrs(new_attrs)
-            @attrs = Attributes.new(new_attrs, self.class.schema)
-          end
-
-          private
 
           attr_reader :attrs
         end

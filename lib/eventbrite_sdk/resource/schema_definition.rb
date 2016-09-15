@@ -7,7 +7,7 @@ module EventbriteSDK
         @attrs = {}
       end
 
-      %i(boolean datetime integer string).each do |method|
+      %i(boolean currency datetime integer string).each do |method|
         define_method(method) do |value, *opts|
           options = opts.first
 

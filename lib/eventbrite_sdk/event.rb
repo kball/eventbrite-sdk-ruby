@@ -10,9 +10,11 @@ module EventbriteSDK
 
     attributes_prefix 'event'
 
-    has_many :orders, object_class: 'Order'
     belongs_to :organizer, object_class: 'Organizer'
     belongs_to :venue, object_class: 'Venue'
+
+    has_many :orders, object_class: 'Order'
+    has_many :ticket_classes, object_class: 'TicketClass'
 
     schema_definition do
       string 'name.html'

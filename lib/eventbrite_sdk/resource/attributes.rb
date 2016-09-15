@@ -35,13 +35,17 @@ module EventbriteSDK
         attrs.to_h
       end
 
+      def to_json
+        to_h.to_json
+      end
+
       def inspect
         "#<#{self.class}: #{JSON.pretty_generate(@attrs.to_h)}>"
       end
 
       def reset!
         changes.each do |attribute_key, (old_value, _current_value)|
-          bury(attribute_key, old_value)
+          bury_attribute(attribute_key, old_value)
         end
 
         @changes = {}
@@ -65,7 +69,7 @@ module EventbriteSDK
                   attribute_key
                 end
 
-          payload[key] = value
+          bury(key, value, payload)
         end
       end
 
@@ -75,7 +79,7 @@ module EventbriteSDK
 
       def assign_value(attribute_key, value)
         dirty_check(attribute_key, value)
-        bury(attribute_key, value)
+        bury_attribute(attribute_key, value)
       end
 
       def dirty_check(attribute_key, value)
@@ -86,14 +90,20 @@ module EventbriteSDK
         end
       end
 
-      def bury(attribute_key, value)
+      def bury_attribute(attribute_key, value)
+        bury(attribute_key, value, attrs)
+      end
+
+      def bury(attribute_key, value, hash = {})
         keys = attribute_key.split '.'
 
         # Hand rolling #bury
         # hopefully we get it in the next release of Ruby
-        keys.each_cons(2).reduce(attrs) do |prev_attrs, (key, _)|
+        keys.each_cons(2).reduce(hash) do |prev_attrs, (key, _)|
           prev_attrs[key] ||= {}
         end[keys.last] = value
+
+        hash
       end
 
       def method_missing(method_name, *_args, &_block)

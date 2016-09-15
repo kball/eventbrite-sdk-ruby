@@ -128,6 +128,17 @@ module EventbriteSDK
       end
     end
 
+    describe '#to_json' do
+      it 'calls attrs.to_h.to_json' do
+        raw_attrs = { a: 'aye', b: 'bee' }
+
+        attributes = described_class.new(raw_attrs)
+
+        expect(attributes.to_json).to eq(raw_attrs.to_json)
+
+      end
+    end
+
     describe '#reset!' do
       it 'returns values to the original clean state if changed?' do
         attrs = described_class.new('this' => { 'is' => 'original' })
@@ -148,14 +159,30 @@ module EventbriteSDK
       it 'returns a hash containing the dot notation keys with changed values' do
         subject.assign_attributes('name.html' => 'An Event')
 
-        expect(subject.payload).to eq('name.html' => 'An Event')
+        expect(subject.payload).to eq(
+          'name' => { 'html' => 'An Event' }
+        )
       end
 
       it 'prefixes keys if a prefix is given' do
-        subject.assign_attributes('name.html' => 'An Event')
+        subject.assign_attributes(
+          'name.html' => 'An Event',
+          'name.text' => 'An Event',
+          'a.nested.struct' => 'So nested',
+        )
 
         expect(subject.payload('prefixed')).to eq(
-          'prefixed.name.html' => 'An Event'
+          'prefixed' => {
+            'name' => {
+              'html' => 'An Event',
+              'text' => 'An Event',
+            },
+            'a' => {
+              'nested' => {
+                'struct' => 'So nested'
+              }
+            }
+          }
         )
       end
 

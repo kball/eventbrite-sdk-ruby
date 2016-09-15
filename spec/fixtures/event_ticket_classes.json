@@ -1,0 +1,68 @@
+{
+  "pagination": {
+    "object_count": 1,
+    "page_count": 1,
+    "page_number": 1,
+    "page_size": 50
+  },
+  "ticket_classes": [
+    {
+      "actual_cost": {
+        "currency": "USD",
+        "display": "$1.20",
+        "major_value": "1.20",
+        "value": 120
+      },
+      "actual_fee": {
+        "currency": "USD",
+        "display": "$0.66",
+        "major_value": "0.66",
+        "value": 66
+      },
+      "auto_hide": false,
+      "cost": {
+        "currency": "USD",
+        "display": "$1.20",
+        "major_value": "1.20",
+        "value": 120
+      },
+      "description": null,
+      "donation": false,
+      "event_id": "24967032065",
+      "fee": {
+        "currency": "USD",
+        "display": "$0.66",
+        "major_value": "0.66",
+        "value": 66
+      },
+      "free": false,
+      "has_pdf_ticket": true,
+      "hidden": false,
+      "hide_description": true,
+      "id": "53546442",
+      "include_fee": false,
+      "maximum_quantity": null,
+      "maximum_quantity_per_order": 10,
+      "minimum_quantity": 1,
+      "name": "Not GA",
+      "on_sale_status": "AVAILABLE",
+      "quantity_sold": 2,
+      "quantity_total": 10000,
+      "resource_uri": "https://www.eventbriteapi.com/v3/events/24967032065/ticket_classes/53546442/",
+      "sales_channels": [
+        "online",
+        "atd"
+      ],
+      "sales_end": "2017-03-14T01:00:00Z",
+      "sales_start": "2016-08-16T23:10:00Z",
+      "split_fee": false,
+      "tax": {
+        "currency": "USD",
+        "display": "$0.00",
+        "major_value": "0.00",
+        "value": 0
+      },
+      "variants": []
+    }
+  ]
+}

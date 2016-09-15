@@ -6,7 +6,7 @@ module EventbriteSDK
 
     describe 'dynamically defined type methods: boolean datetime integer string' do
       it 'is writeable when not given read_only option' do
-        %i(boolean datetime integer string).each do |method|
+        %i(boolean currency datetime integer string).each do |method|
           subject.public_send(method, 'write')
           subject.public_send(method, 'read', read_only: true)
 

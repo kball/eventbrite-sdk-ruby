@@ -65,9 +65,56 @@ module EventbriteSDK
 
     describe '#orders' do
       context 'when event is new' do
-        it 'instantiates a new empty ResourceList' do
+        it 'instantiates an empty ResourceList' do
           expect(subject.orders).to be_an_instance_of(ResourceList)
           expect(subject.orders).to be_empty
+        end
+      end
+
+      context 'when event exists' do
+        it 'hydrates a list of Orders' do
+          stub_get(
+            path: 'events/31337',
+            fixture: :event_read,
+            override: { 'id' => '31337' },
+          )
+          stub_get(path: 'events/31337/orders/?page=1', fixture: :event_orders)
+
+          event = described_class.retrieve(id: '31337')
+
+          event.orders.retrieve
+
+          expect(event.orders).to be_an_instance_of(ResourceList)
+          expect(event.orders.first).to be_an_instance_of(Order)
+        end
+      end
+    end
+
+    describe '#ticket_classes' do
+      context 'when event is new' do
+        it 'instantiates an empty ResourceList' do
+          expect(subject.ticket_classes).to be_an_instance_of(ResourceList)
+          expect(subject.ticket_classes).to be_empty
+        end
+      end
+
+      context 'when event exists' do
+        it 'hydrates a list of TicketClasses' do
+          stub_get(
+            path: 'events/31337',
+            fixture: :event_read,
+            override: { 'id' => '31337' },
+          )
+          stub_get(
+            path: 'events/31337/ticket_classes/?page=1',
+            fixture: :event_ticket_classes
+          )
+
+          event = described_class.retrieve(id: '31337')
+          event.ticket_classes.retrieve
+
+          expect(event.ticket_classes).to be_an_instance_of(ResourceList)
+          expect(event.ticket_classes.first).to be_an_instance_of(TicketClass)
         end
       end
     end
