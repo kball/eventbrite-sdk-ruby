@@ -10,6 +10,41 @@ module EventbriteSDK
     end
 
     describe '#retrieve' do
+      context 'when @expansion is set' do
+        it 'calls request with an expansion query' do
+          request = double('Request', get: {})
+
+          list = described_class.new(request: request)
+
+          list.with_expansion('organizer', :event, 'event.venue').retrieve
+
+          expect(request).to have_received(:get).with(
+            url: nil,
+            query: { page: 1, expansion: 'organizer,event,event.venue' }
+          )
+        end
+
+        context 'when another page is requested' do
+          it 'continues to paginate with the original expansion' do
+            payload = {
+              'pagination' => { 'page_number' => 1, 'page_count' => 2 }
+            }
+            request = double('Request', get: payload)
+
+            list = described_class.new(request: request)
+
+            list.with_expansion('organizer', :event, 'event.venue').retrieve
+
+            list.next_page
+
+            expect(request).to have_received(:get).with(
+              url: nil,
+              query: { page: 2, expansion: 'organizer,event,event.venue' }
+            )
+          end
+        end
+      end
+
       context 'when the request payload contains the key given' do
         it 'hydrates objects within a given key with then given object_class' do
           payload = {

@@ -35,19 +35,13 @@ module EventbriteSDK
           #             e.g. belongs_to :thing => defines self#thing
           # object_class: String representation of resource
           #               e.g. 'Event' => EventbriteSDK::Event
-          # mappings: key values of remaps on instance values
-          #           e.g. { id: :organization_id }
-          #           When an instance has an organization_id of 12
-          #           a mapping will call retrieve with { 'id' => 12 }
           #
-          def belongs_to(rel_method, object_class: nil, mappings: nil)
+          def belongs_to(rel_method, object_class: nil)
             define_method(rel_method) do
-              keys = mappings.each_with_object({}) do |(key, method), hash|
-                hash[key.to_s] = public_send(method)
-              end
+              query = { id: public_send(:"#{rel_method}_id") }
 
               relationships[rel_method] ||= begin
-                resource_class_from_string(object_class).retrieve(keys)
+                resource_class_from_string(object_class).retrieve(query)
               end
             end
           end

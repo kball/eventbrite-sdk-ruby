@@ -19,7 +19,8 @@ module EventbriteSDK
     end
 
     def retrieve
-      response = @request.get(url: url_base, query: { page: page_number })
+      response = load_response
+
       @objects = (response[key.to_s] || []).map { |raw| object_class.new(raw) }
       @pagination = response['pagination']
 
@@ -52,18 +53,30 @@ module EventbriteSDK
       { key => objects.map(&:to_h), 'pagination' => @pagination }.to_json(opts)
     end
 
+    def with_expansion(*args)
+      @expansion = args.first && args.join(',')
+
+      self
+    end
+
     private
 
     def pagination
-      @pagination ||= {
-        'page_count' => 1,
-        'page_number' => 1,
-      }
+      @pagination ||= { 'page_count' => 1, 'page_number' => 1 }
     end
 
-    attr_reader :key,
+    def load_response
+      query = { page: page_number }
+      query[:expand] = expansion if expansion
+
+      request.get(url: url_base, query: query)
+    end
+
+    attr_reader :expansion,
+                :key,
                 :object_class,
                 :objects,
+                :request,
                 :url_base
   end
 end
