@@ -33,6 +33,10 @@ module EventbriteSDK
       class: BadRequest,
       message: 'invalid request',
     },
+    RestClient::Forbidden => {
+      class: Forbidden,
+      message: 'not authorized',
+    },
     RestClient::Unauthorized => {
       class: Unauthorized,
       message: 'unauthorized request',
