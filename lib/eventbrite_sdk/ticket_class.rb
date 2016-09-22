@@ -17,10 +17,8 @@ module EventbriteSDK
       boolean 'include_fee'
       boolean 'split_fee'
       string 'sales_channels' # TODO list
-      datetime 'sales_start.utc'
-      datetime 'sales_start.timezone'
-      datetime 'sales_end.utc'
-      datetime 'sales_end.timezone'
+      datetime 'sales_start'
+      datetime 'sales_end'
       integer 'minimum_quantity'
       integer 'maximum_quantity'
       boolean 'auto_hide'
