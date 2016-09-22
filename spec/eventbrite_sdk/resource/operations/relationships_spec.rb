@@ -8,7 +8,7 @@ module EventbriteSDK
           it 'defines a method that calls .retrieve on a matching class' do
             wheel = TestRelations::Wheel.new
 
-            expect(wheel.car).to eq('id' => 'car_id')
+            expect(wheel.car).to eq(id: 'car_id')
           end
         end
 
@@ -61,7 +61,7 @@ module EventbriteSDK
           class Wheel
             include Relationships
 
-            belongs_to :car, object_class: 'Car', mappings: { id: :car_id }
+            belongs_to :car, object_class: 'Car'
 
             def car_id
               'car_id'

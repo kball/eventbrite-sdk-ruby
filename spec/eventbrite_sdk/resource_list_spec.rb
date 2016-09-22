@@ -20,7 +20,7 @@ module EventbriteSDK
 
           expect(request).to have_received(:get).with(
             url: nil,
-            query: { page: 1, expansion: 'organizer,event,event.venue' }
+            query: { page: 1, expand: 'organizer,event,event.venue' }
           )
         end
 
@@ -39,7 +39,7 @@ module EventbriteSDK
 
             expect(request).to have_received(:get).with(
               url: nil,
-              query: { page: 2, expansion: 'organizer,event,event.venue' }
+              query: { page: 2, expand: 'organizer,event,event.venue' }
             )
           end
         end
