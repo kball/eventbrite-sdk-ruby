@@ -88,7 +88,6 @@ describe EventbriteSDK do
           headers: {
             'Accept' => 'application/json',
             'Authorization' => "Bearer #{token}",
-            'Content-Type' => 'application/json',
           }
         )
       end

@@ -1,0 +1,14 @@
+{
+  "upload_method": "POST",
+  "upload_token": "eyJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJldmVud",
+  "upload_url": "https://s3.amazonaws.com/uploader/",
+  "upload_data": {
+    "AWSAccessKeyId": "IDFUHSSIUDFHNSDK2342",
+    "bucket": "eventbrite-uploader-incoming-qa",
+    "acl": "private",
+    "key": "90u34rgfhoidnv89b",
+    "signature": "daslkmvcxlnv+y+23KLDFSNFKS=",
+    "policy": "SwiZXhwaXJhdGlvbiI6IjIwMTYtMDktMjNUMTg6MTY6NDRaIn0="
+  },
+  "file_parameter_name": "file"
+}

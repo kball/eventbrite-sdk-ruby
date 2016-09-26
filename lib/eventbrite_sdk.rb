@@ -15,6 +15,7 @@ require 'eventbrite_sdk/resource'
 
 require 'eventbrite_sdk/attendee'
 require 'eventbrite_sdk/event'
+require 'eventbrite_sdk/media'
 require 'eventbrite_sdk/order'
 require 'eventbrite_sdk/organizer'
 require 'eventbrite_sdk/ticket_class'
@@ -78,12 +79,15 @@ module EventbriteSDK
           headers: {
             'Accept' => 'application/json',
             'Authorization' => "Bearer #{token}",
-            'Content-Type' => 'application/json',
           },
         }
 
         request[:headers][:params] = params[:query] if params[:query]
-        request[:payload] = params[:payload].to_json if params[:method] == :post
+
+        if params[:method] == :post
+          request[:payload] = params[:payload].to_json
+          request[:headers]['Content-Type'] = 'application/json'
+        end
 
         response = RestClient::Request.execute(request)
 
