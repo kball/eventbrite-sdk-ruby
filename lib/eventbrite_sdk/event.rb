@@ -39,6 +39,7 @@ module EventbriteSDK
       string 'password'
       integer 'capacity'
       boolean 'show_remaining'
+      string 'status', read_only: true
       string 'created', read_only: true
       string 'changed', read_only: true
       string 'resource_uri', read_only: true
