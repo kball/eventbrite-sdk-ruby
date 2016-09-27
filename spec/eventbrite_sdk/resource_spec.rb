@@ -170,6 +170,21 @@ module EventbriteSDK
       end
     end
 
+    describe '#list_class' do
+      context 'when the given :symbol is a ResourceList' do
+        it 'returns the constantized class' do
+          expect(subject.list_class(:owned_event_orders)).
+            to eq(Lists::OwnedEventOrdersList)
+        end
+      end
+
+      context 'when the given :symbol does not match any valid ResourceList classes' do
+        it 'returns ResourceList' do
+          expect(subject.list_class(:nope)).to eq(ResourceList)
+        end
+      end
+    end
+
     describe 'dynamic instance methods' do
       before do
         described_class.resource_path 'events/:id'

@@ -13,6 +13,8 @@ require 'eventbrite_sdk/resource/schema_definition'
 require 'eventbrite_sdk/resource_list'
 require 'eventbrite_sdk/resource'
 
+require 'eventbrite_sdk/lists/owned_event_orders_list'
+
 require 'eventbrite_sdk/attendee'
 require 'eventbrite_sdk/event'
 require 'eventbrite_sdk/media'

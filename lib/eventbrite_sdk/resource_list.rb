@@ -11,11 +11,12 @@ module EventbriteSDK
       key: nil,
       request: EventbriteSDK
     )
-      @url_base = url_base
-      @object_class = object_class
       @key = key
+      @object_class = object_class
       @objects = []
+      @query = {}
       @request = request
+      @url_base = url_base
     end
 
     def retrieve
@@ -54,7 +55,11 @@ module EventbriteSDK
     end
 
     def with_expansion(*args)
-      @expansion = args.first && args.join(',')
+      if args.first
+        @query[:expand] = args.join(',')
+      else
+        @query.delete(:expand)
+      end
 
       self
     end
@@ -66,16 +71,14 @@ module EventbriteSDK
     end
 
     def load_response
-      query = { page: page_number }
-      query[:expand] = expansion if expansion
-
-      request.get(url: url_base, query: query)
+      request.get(url: url_base, query: query.merge(page: page_number))
     end
 
     attr_reader :expansion,
                 :key,
                 :object_class,
                 :objects,
+                :query,
                 :request,
                 :url_base
   end

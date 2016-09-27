@@ -41,10 +41,6 @@ module EventbriteSDK
       end
     end
 
-    def list_class
-      ResourceList
-    end
-
     private
 
     def self.define_api_actions(*actions)

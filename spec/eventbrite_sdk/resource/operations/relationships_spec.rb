@@ -14,14 +14,14 @@ module EventbriteSDK
 
         describe '.has_many' do
           it 'defines a method that returns a new list_class instance' do
-            allow(TestRelations::List).to receive(:new).and_call_original
+            allow(ResourceList).to receive(:new).and_call_original
             car = TestRelations::Car.new
 
             result = car.wheels
 
-            expect(result).to be_an_instance_of(car.list_class)
+            expect(result).to be_an_instance_of(ResourceList)
 
-            expect(TestRelations::List).to have_received(:new).with(
+            expect(ResourceList).to have_received(:new).with(
               url_base:
                 car.path(:wheels),
               object_class:
@@ -52,10 +52,6 @@ module EventbriteSDK
             def resource_class_from_string(string)
               TestRelations.const_get(string)
             end
-
-            def list_class
-              List
-            end
           end
 
           class Wheel
@@ -69,14 +65,6 @@ module EventbriteSDK
 
             def resource_class_from_string(string)
               TestRelations.const_get(string)
-            end
-          end
-
-          class List
-            attr_reader :args
-
-            def initialize(args)
-              @args = args
             end
           end
         end

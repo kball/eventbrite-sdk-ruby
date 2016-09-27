@@ -82,7 +82,7 @@ module EventbriteSDK
             define_method(rel_method) do
               key ||= rel_method
 
-              relationships[rel_method] ||= list_class.new(
+              relationships[rel_method] ||= list_class(rel_method).new(
                 url_base: path(rel_method),
                 object_class: resource_class_from_string(object_class),
                 key: key
@@ -92,6 +92,17 @@ module EventbriteSDK
         end
 
         module InstanceMethods
+          def list_class(resource_list_rel)
+            class_name = resource_list_rel.to_s.split('_').map(&:capitalize).join
+            class_name = "#{class_name}List"
+
+            if Lists.const_defined?(class_name)
+              Lists.const_get(class_name)
+            else
+              ResourceList
+            end
+          end
+
           private
 
           def relationships
