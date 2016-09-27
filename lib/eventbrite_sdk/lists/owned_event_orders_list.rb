@@ -6,7 +6,7 @@ module EventbriteSDK
 
         @pagination = { 'page_count' => 1, 'page_number' => 1 }
 
-        retrieve
+        self
       end
 
       private

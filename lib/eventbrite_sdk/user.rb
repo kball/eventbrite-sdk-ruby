@@ -13,5 +13,9 @@ module EventbriteSDK
       string 'emails'
       string 'image_id'
     end
+
+    def self.me
+      new('id' => 'me')
+    end
   end
 end

@@ -12,7 +12,7 @@ module EventbriteSDK
               request: request
             )
 
-            list.search('term')
+            list.search('term').retrieve
 
             expect(request).to have_received(:get).with(
               url: 'users/me/search_owned_event_orders',
@@ -29,7 +29,7 @@ module EventbriteSDK
               request: request
             )
 
-            list.search(false)
+            list.search(false).retrieve
 
             expect(request).to have_received(:get).with(
               url: 'users/me/owned_event_orders', query: { page: 1 }
