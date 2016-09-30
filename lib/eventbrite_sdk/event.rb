@@ -21,7 +21,7 @@ module EventbriteSDK
       string 'description.html'
       string 'organizer_id'
       datetime 'start.utc'
-      string 'start.timezone'
+      datetime 'start.timezone'
       datetime 'end.utc'
       datetime 'end.timezone'
       boolean 'hide_start_date'

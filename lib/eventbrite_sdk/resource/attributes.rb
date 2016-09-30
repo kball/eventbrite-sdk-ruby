@@ -79,6 +79,7 @@ module EventbriteSDK
 
       def assign_value(attribute_key, value)
         dirty_check(attribute_key, value)
+        add_rich_value(attribute_key)
         bury_attribute(attribute_key, value)
       end
 
@@ -92,6 +93,18 @@ module EventbriteSDK
 
       def bury_attribute(attribute_key, value)
         bury(attribute_key, value, attrs)
+      end
+
+      # Since we use dirty checking to determine what the payload is
+      # you can run into a case where a "rich media" field needs other attrs
+      # Namely timezone, so if a rich date changed, add the tz with it.
+      def add_rich_value(attribute_key)
+        if changes[attribute_key] && attribute_key =~ /\A(.+)\.utc\z/
+          key_prefix = Regexp.last_match(1)
+          tz = attrs.dig(key_prefix, 'timezone')
+
+          changes["#{key_prefix}.timezone"] = [tz, tz]
+        end
       end
 
       def bury(attribute_key, value, hash = {})

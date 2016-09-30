@@ -41,6 +41,41 @@ module EventbriteSDK
       end
     end
 
+    describe '#changes' do
+      it 'auto dirties TZ when you touch an attribute that ends in "utc"' do
+        event = described_class.new(
+          'start' => {
+            'utc' => '2012-01-01', 'timezone' => 'America/Los_Angeles'
+          }
+        )
+
+        event.assign_attributes('start.utc' => '9999-99-99')
+
+        expect(event.changes).to match(
+          'start.utc' => ['2012-01-01', '9999-99-99'],
+          'start.timezone' => ['America/Los_Angeles', 'America/Los_Angeles']
+        )
+      end
+
+      it "does not auto override if you are actually changing tz" do
+        event = described_class.new(
+          'start' => {
+            'utc' => '2012-01-01', 'timezone' => 'America/Los_Angeles'
+          }
+        )
+
+        event.assign_attributes(
+          'start.utc' => '9999-99-99',
+          'start.timezone' => 'America/Chicago'
+        )
+
+        expect(event.changes).to match(
+          'start.utc' => ['2012-01-01', '9999-99-99'],
+          'start.timezone' => ['America/Los_Angeles', 'America/Chicago']
+        )
+      end
+    end
+
     describe '#cancel' do
       context 'when id exists' do
         it 'calls save with `cancel`' do
