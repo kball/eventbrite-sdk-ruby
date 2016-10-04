@@ -73,6 +73,10 @@ module EventbriteSDK
         end
       end
 
+      def values
+        attrs.values
+      end
+
       private
 
       attr_reader :schema

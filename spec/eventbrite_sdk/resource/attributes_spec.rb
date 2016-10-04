@@ -190,5 +190,17 @@ module EventbriteSDK
         expect(subject.payload).to eq({})
       end
     end
+
+    describe '#values' do
+      it 'returns the values for every attribute defined' do
+        attrs = described_class.new(
+          'this' => 'great',
+          'that' => 'ok',
+          'nested' => { 'thing' => 'bad' }
+        )
+
+        expect(attrs.values).to eq(['great', 'ok', { 'thing' => 'bad' }])
+      end
+    end
   end
 end
