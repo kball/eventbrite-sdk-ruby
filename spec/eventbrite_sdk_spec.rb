@@ -108,9 +108,11 @@ describe EventbriteSDK do
 
     context 'without token' do
       it 'raises EventbriteSDK::AuthenticationError' do
+        stub_endpoint(path: 'events/1', status: 401, body: :no_token)
+
         expect do
-          described_class.get(url: "events/1")
-        end.to raise_error(described_class::AuthenticationError)
+          described_class.get(url: 'events/1')
+        end.to raise_error(described_class::Unauthorized)
       end
     end
   end

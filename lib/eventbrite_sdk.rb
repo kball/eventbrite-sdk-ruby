@@ -65,42 +65,33 @@ module EventbriteSDK
   end
 
   def self.get(params)
-    request(params.merge(method: :get))
+    params[:headers] = { 'Accept' => 'application/json' }
+    params[:method] = :get
+
+    request(params)
   end
 
   def self.post(params)
-    request(params.merge(method: :post))
+    params[:headers] = { 'Content-Type' => 'application/json' }
+    params[:method] = :post
+    params[:payload] = params[:payload].to_json
+
+    request(params)
   end
 
   def self.request(params)
-    if token
-      begin
-        request = {
-          method: params[:method],
-          url: url(params[:url].gsub(/\/$/, '')),
-          headers: {
-            'Accept' => 'application/json',
-            'Authorization' => "Bearer #{token}",
-          },
-        }
+    query = params.delete(:query)
 
-        request[:headers][:params] = params[:query] if params[:query]
+    params[:url] = url(params[:url].gsub(/\/$/, ''))
+    params[:headers]['Authorization'] = "Bearer #{token}" if token
+    params[:headers][:params] = query if query
 
-        if params[:method] == :post
-          request[:payload] = params[:payload].to_json
-          request[:headers]['Content-Type'] = 'application/json'
-        end
+    response = RestClient::Request.execute(params)
 
-        response = RestClient::Request.execute(request)
-
-        JSON.parse(response.body)
-      rescue *EXCEPTION_MAP.keys => err
-        handler = EXCEPTION_MAP[err.class]
-        raise handler[:class].new(handler[:message], err.response)
-      end
-    else
-      raise AuthenticationError, 'you must provide a token to use the API'
-    end
+    JSON.parse(response.body)
+  rescue *EXCEPTION_MAP.keys => err
+    handler = EXCEPTION_MAP[err.class]
+    raise handler[:class].new(handler[:message], err.response)
   end
 
   def self.url(path)

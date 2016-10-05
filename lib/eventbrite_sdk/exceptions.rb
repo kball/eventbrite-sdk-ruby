@@ -16,7 +16,6 @@ module EventbriteSDK
     end
   end
 
-  class AuthenticationError < EventbriteAPIError; end
   class BadRequest < EventbriteAPIError; end
   class Forbidden < EventbriteAPIError; end
   class InvalidAttribute < EventbriteAPIError; end
