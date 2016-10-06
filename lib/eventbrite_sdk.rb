@@ -40,6 +40,10 @@ module EventbriteSDK
       class: Forbidden,
       message: 'not authorized',
     },
+    RestClient::InternalServerError => {
+      class: InternalServerError,
+      message: 'internal server error',
+    },
     RestClient::Unauthorized => {
       class: Unauthorized,
       message: 'unauthorized request',
