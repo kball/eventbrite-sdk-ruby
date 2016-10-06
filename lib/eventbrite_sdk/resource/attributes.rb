@@ -10,7 +10,7 @@ module EventbriteSDK
       end
 
       def initialize(hydrated_attrs = {}, schema = NullSchemaDefinition.new)
-        @attrs = hydrated_attrs
+        @attrs = stringify_keys(hydrated_attrs)
         @schema = schema
         @changes = {}
       end
@@ -20,7 +20,7 @@ module EventbriteSDK
       end
 
       def assign_attributes(new_attrs)
-        new_attrs.each do |attribute_key, value|
+        stringify_keys(new_attrs).each do |attribute_key, value|
           assign_value(attribute_key, value) if schema.writeable?(attribute_key)
         end
 
@@ -143,6 +143,10 @@ module EventbriteSDK
         else
           value
         end
+      end
+
+      def stringify_keys(hash)
+        hash.map { |key, value| [key.to_s, value] }.to_h
       end
     end
   end

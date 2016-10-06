@@ -17,6 +17,14 @@ module EventbriteSDK
         expect(subject.test).to eq('value')
       end
 
+      context 'when assigning as a symbol' do
+        it 'returns the value of the key when called' do
+          subject.assign_attributes(test: 'value')
+
+          expect(subject.test).to eq('value')
+        end
+      end
+
       context 'given nested attributes' do
         it 'returns a new instance of self' do
           subject.assign_attributes('nested.test' => 'value')
@@ -29,9 +37,12 @@ module EventbriteSDK
 
     describe '#[]' do
       it 'works like a regular hash' do
-        attrs = described_class.new('foo' => 'bar')
+        attrs = described_class.new('foo' => 'bar', baz: 'qux')
 
         expect(attrs['foo']).to eq('bar')
+        expect(attrs[:foo]).to eq('bar')
+        expect(attrs['baz']).to eq('qux')
+        expect(attrs[:baz]).to eq('qux')
       end
     end
 
