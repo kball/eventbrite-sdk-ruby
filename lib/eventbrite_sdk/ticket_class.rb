@@ -1,5 +1,7 @@
 module EventbriteSDK
   class TicketClass < Resource
+    ON_SALE_STATUS_AVAILABLE = 'AVAILABLE'.freeze
+
     resource_path 'events/:event_id/ticket_classes/:id'
 
     belongs_to :event, object_class: 'Event'
@@ -24,6 +26,24 @@ module EventbriteSDK
       boolean 'auto_hide'
       boolean 'hidden'
       string 'order_confirmation_message'
+    end
+
+    def available?
+      respond_to?(:on_sale_status) && on_sale_status == ON_SALE_STATUS_AVAILABLE
+    end
+
+    def hide!
+      if hidden
+        assign_attributes('hidden' => false)
+        save
+      end
+    end
+
+    def unhide!
+      unless hidden
+        assign_attributes('hidden' => true)
+        save
+      end
     end
   end
 end

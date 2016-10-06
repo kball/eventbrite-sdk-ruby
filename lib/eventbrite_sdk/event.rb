@@ -1,5 +1,8 @@
 module EventbriteSDK
   class Event < Resource
+    ERROR_CANNOT_PUBLISH = 'CANNOT_UNPUBLISH'.freeze
+    ERROR_ALREADY_PUBLISHED_OR_DELETED = 'ALREADY_PUBLISHED_OR_DELETED'.freeze
+
     # Defines event#cancel, event#publish, and event#unpublish
     #
     # When an event has an id the POST is made, otherwise we return false
@@ -43,6 +46,20 @@ module EventbriteSDK
       string 'created', read_only: true
       string 'changed', read_only: true
       string 'resource_uri', read_only: true
+    end
+
+    def list!
+      unless listed
+        assign_attributes('listed' => false)
+        save
+      end
+    end
+
+    def unlist!
+      if listed
+        assign_attributes('listed' => false)
+        save
+      end
     end
   end
 end
