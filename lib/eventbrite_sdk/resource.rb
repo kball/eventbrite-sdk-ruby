@@ -41,6 +41,10 @@ module EventbriteSDK
       end
     end
 
+    def to_json(opts = {})
+      attrs.to_json
+    end
+
     private
 
     def self.define_api_actions(*actions)

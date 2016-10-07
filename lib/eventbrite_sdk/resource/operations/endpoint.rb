@@ -10,7 +10,9 @@ module EventbriteSDK
               path.gsub(":#{key}", value.to_s)
             end
 
-            new request.get(url: url_path)
+            query = { expand: params[:expand] } if params[:expand]
+
+            new request.get(url: url_path, query: query)
           end
 
           def resource_path(path)

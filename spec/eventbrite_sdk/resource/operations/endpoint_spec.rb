@@ -11,8 +11,21 @@ module EventbriteSDK
 
             result = TestEndpoint.retrieve({ 'id' => 1 }, request)
 
-            expect(request).to have_received(:get).with(url: 'test/1')
+            expect(request).to have_received(:get).with(url: 'test/1', query: nil)
             expect(result.payload).to eq(payload)
+          end
+
+          it 'when given an :expand option it passes as full options' do
+            payload = 'payload'
+            request = double('Request', get: payload)
+
+            result = TestEndpoint.retrieve({ id: 1 , expand: 'events' }, request)
+
+            expect(request).
+              to have_received(:get).
+              with(url: 'test/1', query: { expand: 'events' })
+            expect(result.payload).to eq(payload)
+
           end
         end
 
