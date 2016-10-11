@@ -51,11 +51,22 @@ module EventbriteSDK
             File.dirname(__FILE__), '../fixtures', 'eb-logo.jpg'
           )
 
-          media = described_class.new(:event_logo, File.open(file))
+          media = described_class.new
+          result = media.upload! :event_logo, File.open(file)
 
-          expect(media.upload!).to eq(true)
+          expect(result).to eq(true)
           expect(media.id).to_not be_nil
           expect(media.url).to_not be_nil
+        end
+
+        context 'and invalid image type is given' do
+          it 'should return argument error' do
+            media = described_class.new
+
+            expect do
+              media.upload! '', nil
+            end.to raise_error(ArgumentError)
+          end
         end
       end
     end
