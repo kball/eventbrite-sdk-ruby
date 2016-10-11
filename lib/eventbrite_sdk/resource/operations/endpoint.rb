@@ -41,7 +41,8 @@ module EventbriteSDK
             if postfixed_path.empty?
               full_path
             else
-              "#{full_path}/#{postfixed_path}"
+              full_path += '/' unless full_path.end_with?('/')
+              "#{full_path}#{postfixed_path}"
             end
           end
 

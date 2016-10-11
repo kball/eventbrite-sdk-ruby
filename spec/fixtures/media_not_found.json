@@ -1,0 +1,5 @@
+{
+  "status_code": 404,
+  "error_description": "The image_id you requested does not exist.",
+  "error": "NOT_FOUND"
+}

@@ -3,7 +3,7 @@ module EventbriteSDK
   # https://docs.evbhome.com/apidocs/reference/uploads/?highlight=logo
 
   class Media < Resource
-    resource_path 'media'
+    resource_path 'media/:id'
 
     attr_reader :image_type, :file
 
@@ -24,8 +24,8 @@ module EventbriteSDK
       string 'edge_color_set'
     end
 
-    def initialize(image_type, file)
-      @image_type = VALID_TYPES[image_type]
+    def initialize(image_type = nil, file = nil)
+      @image_type = VALID_TYPES[image_type] if image_type
       @file = file
     end
 

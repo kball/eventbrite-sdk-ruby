@@ -6,6 +6,33 @@ module EventbriteSDK
       EventbriteSDK.token = 'token'
     end
 
+    describe '.retrieve' do
+      context 'when found' do
+        it 'returns a new instance' do
+          stub_endpoint(
+            path: 'media/1234',
+            body: :media_read,
+          )
+          media = described_class.retrieve id: '1234'
+
+          expect(media).to be_an_instance_of(described_class)
+        end
+      end
+
+      context 'when not found' do
+        it 'throws some sort of error' do
+          stub_endpoint(
+            path: 'media/10000',
+            status: 404,
+            body: :media_not_found,
+          )
+
+          expect { described_class.retrieve id: '10000' }.
+            to raise_error('requested object was not found')
+        end
+      end
+    end
+
     describe '#upload' do
       context 'when uploading an event logo' do
         it 'should upload it and hydrate attributes' do
