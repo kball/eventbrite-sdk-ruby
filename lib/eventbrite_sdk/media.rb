@@ -67,6 +67,10 @@ module EventbriteSDK
         url: path('upload'), payload: { upload_token: upload_token }
       )
 
+      if payload['crop_mask']
+        response = request.post(url: path(response['id']), payload: payload)
+      end
+
       reload(response)
     end
   end

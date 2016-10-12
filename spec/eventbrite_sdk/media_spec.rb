@@ -59,6 +59,45 @@ module EventbriteSDK
           expect(media.url).to_not be_nil
         end
 
+        context 'and crop mask is used' do
+          it 'should upload it and apply crop mask after' do
+            stub_get(
+              path: 'media/upload/?type=image-event-logo',
+              fixture: :media_upload_instructions
+            )
+
+            stub_request(:post, 'https://s3.amazonaws.com/uploader/')
+
+            stub_post_with_response(
+              path: 'media/upload', fixture: :media_upload_notify
+            )
+
+            stub_post_with_response(
+              path: 'media/675348978', fixture: :media_crop_mask
+            )
+
+            file = File.join(
+              File.dirname(__FILE__), '../fixtures', 'eb-logo.jpg'
+            )
+
+            media = described_class.build(
+              'crop_mask' => {
+                'x' => 0,
+                'y' => 0,
+                'width' => 2160,
+                'height' => 1080
+              }
+            )
+            result = media.upload! :event_logo, File.open(file)
+
+            expect(result).to eq(true)
+            expect(media.id).to_not be_nil
+            expect(media.url).to_not be_nil
+            expect(media.crop_mask.width).to eq(2160)
+            expect(media.crop_mask.height).to eq(1080)
+          end
+        end
+
         context 'and invalid image type is given' do
           it 'should return argument error' do
             media = described_class.new
