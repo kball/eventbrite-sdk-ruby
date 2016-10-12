@@ -25,6 +25,8 @@ require 'eventbrite_sdk/user'
 require 'eventbrite_sdk/venue'
 require 'eventbrite_sdk/webhook'
 
+require 'eventbrite_sdk/report'
+
 module EventbriteSDK
   BASE = "https://www.eventbriteapi.com/v#{VERSION.split('.').first}".freeze
   EXCEPTION_MAP = {
