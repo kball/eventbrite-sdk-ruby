@@ -145,8 +145,8 @@ module EventbriteSDK
         end
       end
 
-      def stringify_keys(hash)
-        hash.map { |key, value| [key.to_s, value] }.to_h
+      def stringify_keys(params)
+        params.to_h.map { |key, value| [key.to_s, value] }.to_h
       end
     end
   end
