@@ -3,7 +3,7 @@ require 'spec_helper'
 describe EventbriteSDK do
   after(:each) do
     Thread.current[described_class::THREAD_EB_API_TOKEN_KEY] = nil
-    Thread.current[described_class::THREAD_BASE_URL_KEY] = nil
+    described_class.base_url = described_class::BASE
   end
 
   it 'has a version number' do
@@ -26,14 +26,14 @@ describe EventbriteSDK do
 
       described_class.base_url = base_url
 
-      expect(Thread.current[described_class::THREAD_BASE_URL_KEY]).to eq(base_url)
+      expect(described_class.base_url).to eq(base_url)
     end
   end
 
   describe '.base_url' do
     context 'when base_url is set' do
       it 'returns the value from the current thread' do
-        Thread.current[described_class::THREAD_BASE_URL_KEY] = 'value'
+        described_class.base_url = 'value'
 
         expect(described_class.base_url).to eq('value')
       end

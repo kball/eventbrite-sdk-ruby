@@ -52,7 +52,6 @@ module EventbriteSDK
     }
   }.freeze
   THREAD_EB_API_TOKEN_KEY = :eb_api_token
-  THREAD_BASE_URL_KEY = :base_url
 
   def self.token
     Thread.current[THREAD_EB_API_TOKEN_KEY]
@@ -63,11 +62,11 @@ module EventbriteSDK
   end
 
   def self.base_url
-    Thread.current[THREAD_BASE_URL_KEY] || BASE
+    @base_url || BASE
   end
 
   def self.base_url=(url)
-    Thread.current[THREAD_BASE_URL_KEY] = url
+    @base_url = url
   end
 
   def self.get(params)
