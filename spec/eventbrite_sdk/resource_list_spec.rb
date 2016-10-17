@@ -10,6 +10,19 @@ module EventbriteSDK
     end
 
     describe '#retrieve' do
+      context 'when query is set on initialization' do
+        it 'calls request with query' do
+          request = double('Request', get: {})
+
+          described_class.new(request: request, query: { event_id: 1 }).retrieve
+
+          expect(request).to have_received(:get).with(
+            url: nil,
+            query: { event_id: 1, page: 1 }
+          )
+        end
+      end
+
       context 'when @expansion is set' do
         it 'calls request with an expansion query' do
           request = double('Request', get: {})

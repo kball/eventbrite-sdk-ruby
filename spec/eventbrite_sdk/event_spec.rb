@@ -6,6 +6,22 @@ module EventbriteSDK
       EventbriteSDK.token = 'token'
     end
 
+    describe '.search' do
+      context 'when found' do
+        it 'returns a list of events' do
+          stub_endpoint(
+            path: 'events/search/?user.id=123&page=1',
+            body: :events,
+          )
+          events = described_class.search('user.id' => 123).retrieve
+
+          expect(events).to be_an_instance_of(ResourceList)
+          expect(events).to_not be_empty
+          expect(events.first).to be_an_instance_of(described_class)
+        end
+      end
+    end
+
     describe '.retrieve' do
       context 'when found' do
         it 'returns a new instance' do

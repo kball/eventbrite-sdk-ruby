@@ -9,12 +9,13 @@ module EventbriteSDK
       url_base: nil,
       object_class: nil,
       key: nil,
+      query: {},
       request: EventbriteSDK
     )
       @key = key
       @object_class = object_class
       @objects = []
-      @query = {}
+      @query = query
       @request = request
       @url_base = url_base
     end

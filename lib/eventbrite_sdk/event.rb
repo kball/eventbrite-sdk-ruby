@@ -48,6 +48,15 @@ module EventbriteSDK
       string 'resource_uri', read_only: true
     end
 
+    def self.search(params)
+      ResourceList.new(
+        url_base: 'events/search',
+        object_class: self,
+        key: 'events',
+        query: params
+      )
+    end
+
     def list!
       unless listed
         assign_attributes('listed' => false)
