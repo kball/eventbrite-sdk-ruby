@@ -52,6 +52,7 @@ module EventbriteSDK
     }
   }.freeze
   THREAD_EB_API_TOKEN_KEY = :eb_api_token
+  VERIFY_SSL = true
 
   def self.token
     Thread.current[THREAD_EB_API_TOKEN_KEY]
@@ -67,6 +68,18 @@ module EventbriteSDK
 
   def self.base_url=(url)
     @base_url = url
+  end
+
+  def self.verify_ssl?
+    if @verify_ssl.nil?
+      VERIFY_SSL
+    else
+      @verify_ssl
+    end
+  end
+
+  def self.verify_ssl=(verifies)
+    @verify_ssl = verifies
   end
 
   def self.get(params)
@@ -90,6 +103,7 @@ module EventbriteSDK
     params[:url] = url(params[:url].gsub(/\/$/, ''))
     params[:headers]['Authorization'] = "Bearer #{token}" if token
     params[:headers][:params] = query if query
+    params[:verify_ssl] = verify_ssl?
 
     response = RestClient::Request.execute(params)
 

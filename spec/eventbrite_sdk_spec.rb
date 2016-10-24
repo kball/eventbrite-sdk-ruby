@@ -4,6 +4,7 @@ describe EventbriteSDK do
   after(:each) do
     Thread.current[described_class::THREAD_EB_API_TOKEN_KEY] = nil
     described_class.base_url = described_class::BASE
+    described_class.verify_ssl = described_class::VERIFY_SSL
   end
 
   it 'has a version number' do
@@ -17,6 +18,22 @@ describe EventbriteSDK do
       expect(described_class::BASE).to eq(
         "https://www.eventbriteapi.com/v#{major}"
       )
+    end
+  end
+
+  describe '.verify_ssl?' do
+    context 'when verify_ssl is set' do
+      it 'returns the given value' do
+        described_class.verify_ssl = false
+
+        expect(described_class).not_to be_verify_ssl
+      end
+    end
+
+    context 'when verify_ssl is not set' do
+      it 'returns default constant' do
+        expect(described_class.verify_ssl?).to eq(true)
+      end
     end
   end
 
@@ -87,8 +104,9 @@ describe EventbriteSDK do
           url: "#{described_class::BASE}/events/1/",
           headers: {
             'Accept' => 'application/json',
-            'Authorization' => "Bearer #{token}",
-          }
+            'Authorization' => "Bearer #{token}"
+          },
+          verify_ssl: true
         )
       end
     end
