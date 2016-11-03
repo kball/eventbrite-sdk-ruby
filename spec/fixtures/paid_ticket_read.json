@@ -1,0 +1,55 @@
+{
+  "actual_cost": {
+    "display": "$100.00",
+    "currency": "USD",
+    "value": 10000,
+    "major_value": "100.00"
+  },
+  "actual_fee": {
+    "display": "$6.09",
+    "currency": "USD",
+    "value": 609,
+    "major_value": "6.09"
+  },
+  "cost": {
+    "display": "$100.00",
+    "currency": "USD",
+    "value": 10000,
+    "major_value": "100.00"
+  },
+  "fee": {
+    "display": "$6.09",
+    "currency": "USD",
+    "value": 609,
+    "major_value": "6.09"
+  },
+  "tax": {
+    "display": "$0.00",
+    "currency": "USD",
+    "value": 0,
+    "major_value": "0.00"
+  },
+  "resource_uri": "https://www.evbqaapi.com/v3/events/28066691229/ticket_classes/56879563/",
+  "name": "I'm Spensive",
+  "description": null,
+  "donation": false,
+  "free": false,
+  "minimum_quantity": 1,
+  "maximum_quantity": null,
+  "maximum_quantity_per_order": 10,
+  "on_sale_status": "AVAILABLE",
+  "quantity_total": 100,
+  "quantity_sold": 0,
+  "sales_start": "2016-11-01T22:05:00Z",
+  "sales_end": "2016-11-03T01:00:00Z",
+  "hidden": false,
+  "include_fee": false,
+  "split_fee": false,
+  "hide_description": true,
+  "auto_hide": false,
+  "variants": [],
+  "has_pdf_ticket": true,
+  "sales_channels": ["online", "atd"],
+  "event_id": "28066691229",
+  "id": "56879563"
+}
