@@ -20,6 +20,10 @@ module EndpointStub
     stub_endpoint(path: path, method: :post, body: payload)
   end
 
+  def stub_delete(path: '')
+    stub_endpoint(path: path, method: :delete, body: { 'deleted': true })
+  end
+
   private
 
   def file(filename)

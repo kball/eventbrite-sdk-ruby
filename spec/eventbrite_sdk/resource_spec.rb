@@ -59,7 +59,7 @@ module EventbriteSDK
       end
 
       context 'when id is nil' do
-        it 'returns false'  do
+        it 'returns false' do
           described_class.resource_path 'events/:id'
 
           resource = described_class.new('anything' => '1234')
@@ -214,6 +214,18 @@ module EventbriteSDK
         resource.new_method
 
         expect(resource).to have_received(:save).with('another_method_name')
+      end
+    end
+
+    describe '#delete' do
+      it 'deletes the resource and returns true' do
+        described_class.resource_path 'events/:id'
+
+        stub_delete(path: 'events/1234')
+
+        resource = described_class.new('id' => '1234')
+
+        expect(resource.delete).to eq(true)
       end
     end
   end

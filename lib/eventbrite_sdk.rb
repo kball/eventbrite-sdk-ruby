@@ -97,6 +97,13 @@ module EventbriteSDK
     request(params)
   end
 
+  def self.delete(params)
+    params[:headers] = { 'Accept' => 'application/json' }
+    params[:method] = :delete
+
+    request(params)
+  end
+
   def self.request(params)
     query = params.delete(:query)
 

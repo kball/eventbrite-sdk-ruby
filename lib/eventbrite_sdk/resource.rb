@@ -45,6 +45,11 @@ module EventbriteSDK
       attrs.to_json
     end
 
+    def delete(request = EventbriteSDK)
+      response = request.delete(url: path)
+      response['deleted']
+    end
+
     private
 
     def self.define_api_actions(*actions)
