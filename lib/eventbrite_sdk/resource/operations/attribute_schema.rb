@@ -25,7 +25,9 @@ module EventbriteSDK
           end
 
           def build_attrs(new_attrs)
-            @attrs = Attributes.new(new_attrs, self.class.schema)
+            @attrs = Attributes.new(
+              new_attrs, self.class.schema || NullSchemaDefinition.new
+            )
           end
 
           private

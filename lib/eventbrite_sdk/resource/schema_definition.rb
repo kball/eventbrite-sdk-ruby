@@ -24,6 +24,10 @@ module EventbriteSDK
         attrs[key]
       end
 
+      def defined_keys
+        attrs.keys
+      end
+
       private
 
       attr_reader :read_only_keys, :resource_name, :attrs

@@ -10,9 +10,14 @@ module EventbriteSDK
       end
 
       def initialize(hydrated_attrs = {}, schema = NullSchemaDefinition.new)
-        @attrs = stringify_keys(hydrated_attrs)
-        @schema = schema
+        @attrs = {}
         @changes = {}
+        @schema = schema
+
+        # Build out initial hash based on schema's defined keys
+        schema.defined_keys.each { |key| bury_attribute(key, nil) }
+
+        @attrs = attrs.merge(stringify_keys(hydrated_attrs))
       end
 
       def [](key)

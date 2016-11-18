@@ -4,6 +4,10 @@ module EventbriteSDK
       def writeable?(_key)
         true
       end
+
+      def defined_keys
+        []
+      end
     end
   end
 end

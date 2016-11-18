@@ -83,7 +83,11 @@ module EventbriteSDK
 
       context 'when given schema that is writeable' do
         it 'returns a new instance' do
-          schema = double('schema', writeable?: true)
+          schema = double(
+            'schema',
+            writeable?: true,
+            defined_keys: ['name.html']
+          )
 
           attrs = described_class.new({}, schema)
           attrs.assign_attributes('name.html' => 'An Event')
@@ -98,7 +102,11 @@ module EventbriteSDK
 
       context 'when schema is writeable for one attribute, but not another' do
         it 'returns a new instance with only writeable changes' do
-          schema = double('schema', writeable?: true)
+          schema = double(
+            'schema',
+            writeable?: true,
+            defined_keys: ['name.html']
+          )
           allow(schema).to receive(:writeable?).and_return(true, false)
 
           attrs = described_class.new({}, schema)
@@ -127,7 +135,11 @@ module EventbriteSDK
 
       context 'when given schema returns false for #writeable?' do
         it 'does not update the value in hydrated attrs' do
-          schema = double('schema', writeable?: false)
+          schema = double(
+            'schema',
+            writeable?: false,
+            defined_keys: ['read']
+          )
 
           attrs = described_class.new({ 'read' => 'frozen state' }, schema)
 

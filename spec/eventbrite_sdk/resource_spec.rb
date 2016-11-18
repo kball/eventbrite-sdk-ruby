@@ -67,18 +67,6 @@ module EventbriteSDK
           expect(resource.refresh!).to eq(false)
         end
       end
-
-      private
-
-      class DummyResource < Resource
-        resource_path 'events/:id'
-
-        attributes_prefix 'event'
-
-        schema_definition do
-          string 'name.html'
-        end
-      end
     end
 
     describe '#save' do
@@ -114,7 +102,7 @@ module EventbriteSDK
               'start.utc' => '2016-06-06T02:00:00Z',
               'end.timezone' => 'America/Los_Angeles',
               'end.utc' => '2016-07-06T02:00:00Z',
-              'currency' => 'USD',
+              'currency' => 'USD'
             )
 
             expect(resource.save).to eq(true)
@@ -133,7 +121,7 @@ module EventbriteSDK
           stub_get(
             path: 'events/111',
             fixture: :event_read,
-            override: { 'id' => '111' },
+            override: { 'id' => '111' }
           )
           stub_post_with_response(
             path: 'events/111',
@@ -226,6 +214,32 @@ module EventbriteSDK
         resource = described_class.new('id' => '1234')
 
         expect(resource.delete).to eq(true)
+      end
+    end
+
+    describe 'message expectations' do
+      context 'with blank attributes' do
+        subject { DummyResource.new }
+
+        it 'a new instance of DummyResource responds to id returning nil' do
+          expect(subject.id).to be_nil
+        end
+
+        it 'responds and returns nil on #name#html' do
+          expect(subject.name.html).to be_nil
+        end
+      end
+    end
+
+    private
+
+    class DummyResource < Resource
+      resource_path 'events/:id'
+
+      attributes_prefix 'event'
+
+      schema_definition do
+        string 'name.html'
       end
     end
   end

@@ -64,7 +64,7 @@ module EventbriteSDK
             'events' => [
               { 'id' => '1' },
               { 'id' => '2' },
-              { 'id' => '3' },
+              { 'id' => '3' }
             ]
           }
 
@@ -74,7 +74,7 @@ module EventbriteSDK
             url_base: 'url',
             object_class: Event,
             key: :events,
-            request: request,
+            request: request
           )
 
           list.retrieve
@@ -96,7 +96,7 @@ module EventbriteSDK
             'nope' => [
               { 'id' => '1' },
               { 'id' => '2' },
-              { 'id' => '3' },
+              { 'id' => '3' }
             ]
           }
 
@@ -224,7 +224,7 @@ module EventbriteSDK
           url_base: 'url',
           object_class: Event,
           key: :events,
-          request: request,
+          request: request
         )
 
         list.page(2)
@@ -242,18 +242,18 @@ module EventbriteSDK
     end
 
     describe '#to_json' do
-      it 'returns a JSON list of objects' do
+      it 'returns a JSON list of objects hydrated with defined schema' do
         payload = {
           'events' => [
             { 'id' => '1' },
             { 'id' => '2' },
-            { 'id' => '3' },
+            { 'id' => '3' }
           ],
           'pagination' => {
             'object_count' => 3,
             'page_number' => 1,
             'page_size' => 50,
-            'page_count' => 1,
+            'page_count' => 1
           }
         }
 
@@ -263,15 +263,104 @@ module EventbriteSDK
           url_base: 'url',
           object_class: Event,
           key: :events,
-          request: request,
+          request: request
         )
 
         list.retrieve
 
         list_json = JSON.parse(list.to_json)
-        payload_json = JSON.parse(payload.to_json)
 
-        expect(list_json).to eq(payload_json)
+        expect(list_json).to eq(
+          'events' => [
+            {
+              'name' => { 'html' => nil },
+              'description' => { 'html' => nil },
+              'organizer_id' => nil,
+              'start' => { 'utc' => nil, 'timezone' => nil },
+              'end' => { 'utc' => nil, 'timezone' => nil },
+              'hide_start_date' => nil,
+              'hide_end_date' => nil,
+              'currency' => nil,
+              'venue_id' => nil,
+              'online_event' => nil,
+              'listed' => nil,
+              'logo_id' => nil,
+              'category_id' => nil,
+              'subcategory_id' => nil,
+              'format_id' => nil,
+              'shareable' => nil,
+              'invite_only' => nil,
+              'password' => nil,
+              'capacity' => nil,
+              'show_remaining' => nil,
+              'status' => nil,
+              'created' => nil,
+              'changed' => nil,
+              'resource_uri' => nil,
+              'id' => '1'
+            },
+            {
+              'name' => { 'html' => nil },
+              'description' => { 'html' => nil },
+              'organizer_id' => nil,
+              'start' => { 'utc' => nil, 'timezone' => nil },
+              'end' => { 'utc' => nil, 'timezone' => nil },
+              'hide_start_date' => nil,
+              'hide_end_date' => nil,
+              'currency' => nil,
+              'venue_id' => nil,
+              'online_event' => nil,
+              'listed' => nil,
+              'logo_id' => nil,
+              'category_id' => nil,
+              'subcategory_id' => nil,
+              'format_id' => nil,
+              'shareable' => nil,
+              'invite_only' => nil,
+              'password' => nil,
+              'capacity' => nil,
+              'show_remaining' => nil,
+              'status' => nil,
+              'created' => nil,
+              'changed' => nil,
+              'resource_uri' => nil,
+              'id' => '2'
+            },
+            {
+              'name' => { 'html' => nil },
+              'description' => { 'html' => nil },
+              'organizer_id' => nil,
+              'start' => { 'utc' => nil, 'timezone' => nil },
+              'end' => { 'utc' => nil, 'timezone' => nil },
+              'hide_start_date' => nil,
+              'hide_end_date' => nil,
+              'currency' => nil,
+              'venue_id' => nil,
+              'online_event' => nil,
+              'listed' => nil,
+              'logo_id' => nil,
+              'category_id' => nil,
+              'subcategory_id' => nil,
+              'format_id' => nil,
+              'shareable' => nil,
+              'invite_only' => nil,
+              'password' => nil,
+              'capacity' => nil,
+              'show_remaining' => nil,
+              'status' => nil,
+              'created' => nil,
+              'changed' => nil,
+              'resource_uri' => nil,
+              'id' => '3'
+            }
+          ],
+          'pagination' => {
+            'object_count' => 3,
+            'page_number' => 1,
+            'page_size' => 50,
+            'page_count' => 1
+          }
+        )
       end
     end
   end
