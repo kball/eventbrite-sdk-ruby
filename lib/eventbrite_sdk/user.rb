@@ -1,5 +1,12 @@
 module EventbriteSDK
   class User < Resource
+    # Defines user#verify and user#unverify
+    #
+    # An user logged using Eventbrite we should generate a verification action
+    # NOTE: only selected users can verify/unverify other users.
+    # POSTS to users/:id/(verify|unverify)
+    define_api_actions :verify, :unverify
+
     resource_path 'users/:id'
 
     has_many :organizers, object_class: 'Organizer', key: :organizers
