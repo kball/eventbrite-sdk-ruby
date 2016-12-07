@@ -50,6 +50,10 @@ module EventbriteSDK
       response['deleted']
     end
 
+    def read_attribute_for_serialization(attribute)
+      attrs[attribute]
+    end
+
     private
 
     def self.define_api_actions(*actions)
