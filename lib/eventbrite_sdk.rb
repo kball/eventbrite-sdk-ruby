@@ -5,6 +5,7 @@ require 'rest_client'
 require 'eventbrite_sdk/version'
 require 'eventbrite_sdk/exceptions'
 require 'eventbrite_sdk/resource/operations/attribute_schema'
+require 'eventbrite_sdk/resource/operations/list'
 require 'eventbrite_sdk/resource/operations/endpoint'
 require 'eventbrite_sdk/resource/operations/relationships'
 require 'eventbrite_sdk/resource/attributes'
@@ -16,16 +17,17 @@ require 'eventbrite_sdk/resource'
 require 'eventbrite_sdk/lists/owned_event_orders_list'
 
 require 'eventbrite_sdk/attendee'
+require 'eventbrite_sdk/category'
 require 'eventbrite_sdk/event'
 require 'eventbrite_sdk/media'
 require 'eventbrite_sdk/order'
 require 'eventbrite_sdk/organizer'
+require 'eventbrite_sdk/report'
+require 'eventbrite_sdk/subcategory'
 require 'eventbrite_sdk/ticket_class'
 require 'eventbrite_sdk/user'
 require 'eventbrite_sdk/venue'
 require 'eventbrite_sdk/webhook'
-
-require 'eventbrite_sdk/report'
 
 module EventbriteSDK
   BASE = "https://www.eventbriteapi.com/v#{VERSION.split('.').first}".freeze

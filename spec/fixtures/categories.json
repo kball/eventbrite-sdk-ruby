@@ -1,0 +1,171 @@
+{
+    "categories": [
+        {
+            "id": "103",
+            "name": "Music",
+            "name_localized": "Music",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/103/",
+            "short_name": "Music",
+            "short_name_localized": "Music"
+        },
+        {
+            "id": "101",
+            "name": "Business & Professional",
+            "name_localized": "Business & Professional",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/101/",
+            "short_name": "Business",
+            "short_name_localized": "Business"
+        },
+        {
+            "id": "110",
+            "name": "Food & Drink",
+            "name_localized": "Food & Drink",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/110/",
+            "short_name": "Food & Drink",
+            "short_name_localized": "Food & Drink"
+        },
+        {
+            "id": "113",
+            "name": "Community & Culture",
+            "name_localized": "Community & Culture",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/113/",
+            "short_name": "Community",
+            "short_name_localized": "Community"
+        },
+        {
+            "id": "105",
+            "name": "Performing & Visual Arts",
+            "name_localized": "Performing & Visual Arts",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/105/",
+            "short_name": "Arts",
+            "short_name_localized": "Arts"
+        },
+        {
+            "id": "104",
+            "name": "Film, Media & Entertainment",
+            "name_localized": "Film, Media & Entertainment",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/104/",
+            "short_name": "Film & Media",
+            "short_name_localized": "Film & Media"
+        },
+        {
+            "id": "108",
+            "name": "Sports & Fitness",
+            "name_localized": "Sports & Fitness",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/108/",
+            "short_name": "Sports & Fitness",
+            "short_name_localized": "Sports & Fitness"
+        },
+        {
+            "id": "107",
+            "name": "Health & Wellness",
+            "name_localized": "Health & Wellness",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/107/",
+            "short_name": "Health",
+            "short_name_localized": "Health"
+        },
+        {
+            "id": "102",
+            "name": "Science & Technology",
+            "name_localized": "Science & Technology",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/102/",
+            "short_name": "Science & Tech",
+            "short_name_localized": "Science & Tech"
+        },
+        {
+            "id": "109",
+            "name": "Travel & Outdoor",
+            "name_localized": "Travel & Outdoor",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/109/",
+            "short_name": "Travel & Outdoor",
+            "short_name_localized": "Travel & Outdoor"
+        },
+        {
+            "id": "111",
+            "name": "Charity & Causes",
+            "name_localized": "Charity & Causes",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/111/",
+            "short_name": "Charity & Causes",
+            "short_name_localized": "Charity & Causes"
+        },
+        {
+            "id": "114",
+            "name": "Religion & Spirituality",
+            "name_localized": "Religion & Spirituality",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/114/",
+            "short_name": "Spirituality",
+            "short_name_localized": "Spirituality"
+        },
+        {
+            "id": "115",
+            "name": "Family & Education",
+            "name_localized": "Family & Education",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/115/",
+            "short_name": "Family & Education",
+            "short_name_localized": "Family & Education"
+        },
+        {
+            "id": "116",
+            "name": "Seasonal & Holiday",
+            "name_localized": "Seasonal & Holiday",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/116/",
+            "short_name": "Holiday",
+            "short_name_localized": "Holiday"
+        },
+        {
+            "id": "112",
+            "name": "Government & Politics",
+            "name_localized": "Government & Politics",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/112/",
+            "short_name": "Government",
+            "short_name_localized": "Government"
+        },
+        {
+            "id": "106",
+            "name": "Fashion & Beauty",
+            "name_localized": "Fashion & Beauty",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/106/",
+            "short_name": "Fashion",
+            "short_name_localized": "Fashion"
+        },
+        {
+            "id": "117",
+            "name": "Home & Lifestyle",
+            "name_localized": "Home & Lifestyle",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/117/",
+            "short_name": "Home & Lifestyle",
+            "short_name_localized": "Home & Lifestyle"
+        },
+        {
+            "id": "118",
+            "name": "Auto, Boat & Air",
+            "name_localized": "Auto, Boat & Air",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/118/",
+            "short_name": "Auto, Boat & Air",
+            "short_name_localized": "Auto, Boat & Air"
+        },
+        {
+            "id": "119",
+            "name": "Hobbies & Special Interest",
+            "name_localized": "Hobbies & Special Interest",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/119/",
+            "short_name": "Hobbies",
+            "short_name_localized": "Hobbies"
+        },
+        {
+            "id": "199",
+            "name": "Other",
+            "name_localized": "Other",
+            "resource_uri": "https://www.evbqaapi.com/v3/categories/199/",
+            "short_name": "Other",
+            "short_name_localized": "Other"
+        }
+    ],
+    "locale": "en_US",
+    "pagination": {
+        "object_count": 20,
+        "page_count": 1,
+        "page_number": 1,
+        "page_size": 50
+    }
+}
