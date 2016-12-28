@@ -59,7 +59,7 @@ module EventbriteSDK
 
     def list!
       unless listed
-        assign_attributes('listed' => false)
+        assign_attributes('listed' => true)
         save
       end
     end

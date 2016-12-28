@@ -114,6 +114,34 @@ module EventbriteSDK
       end
     end
 
+    describe '#list!' do
+      context 'when event is not listed' do
+        it 'sets listed to true and calls #save' do
+          event = described_class.new('id' => '1', 'listed' => false)
+
+          allow(event).to receive(:save)
+
+          event.list!
+
+          expect(event).to have_received(:save)
+          expect(event.listed).to eq(true)
+        end
+      end
+
+      context 'when event is already listed' do
+        it 'does not change listed and does not call #save' do
+          event = described_class.new('id' => '1', 'listed' => true)
+
+          allow(event).to receive(:save)
+
+          event.list!
+
+          expect(event).not_to have_received(:save)
+          expect(event.listed).to eq(true)
+        end
+      end
+    end
+
     describe '#orders' do
       context 'when event is new' do
         it 'instantiates an empty ResourceList' do
@@ -188,6 +216,34 @@ module EventbriteSDK
           allow(event).to receive(:save)
 
           expect(event.publish).to eq(false)
+        end
+      end
+    end
+
+    describe '#unlist!' do
+      context 'when event is not listed' do
+        it 'does not change listed and does not call save' do
+          event = described_class.new('id' => '1', 'listed' => false)
+
+          allow(event).to receive(:save)
+
+          event.unlist!
+
+          expect(event).not_to have_received(:save)
+          expect(event.listed).to eq(false)
+        end
+      end
+
+      context 'when event is already listed' do
+        it 'sets listed to false and calls #save' do
+          event = described_class.new('id' => '1', 'listed' => true)
+
+          allow(event).to receive(:save)
+
+          event.unlist!
+
+          expect(event).to have_received(:save)
+          expect(event.listed).to eq(false)
         end
       end
     end
