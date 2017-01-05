@@ -180,7 +180,7 @@ module EventbriteSDK
 
       it 'should define new_method if included in define_api_actions' do
         resource = described_class.new('id' => '1')
-        allow(resource).to receive(:save)
+        allow(EventbriteSDK).to receive(:post)
 
         expect do
           resource.new_method
@@ -190,18 +190,22 @@ module EventbriteSDK
 
         resource.new_method
 
-        expect(resource).to have_received(:save).with('new_method')
+        expect(EventbriteSDK).
+          to have_received(:post).
+          with(url: 'events/1/new_method')
       end
 
       it 'should alias new_method if included in define_api_actions' do
         resource = described_class.new('id' => '1')
-        allow(resource).to receive(:save)
+        allow(EventbriteSDK).to receive(:post)
 
         described_class.define_api_actions(new_method: :another_method_name)
 
         resource.new_method
 
-        expect(resource).to have_received(:save).with('another_method_name')
+        expect(EventbriteSDK).
+          to have_received(:post).
+          with(url: 'events/1/another_method_name')
       end
     end
 

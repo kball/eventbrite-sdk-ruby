@@ -14,11 +14,13 @@ module EventbriteSDK
       context 'when id exists' do
         it 'calls save with `verify`' do
           user = described_class.new('id' => '1')
-          allow(user).to receive(:save)
+          allow(EventbriteSDK).to receive(:post)
 
           user.verify
 
-          expect(user).to have_received(:save).with('verify')
+          expect(EventbriteSDK).
+            to have_received(:post).
+            with(url: 'users/1/verify')
         end
       end
 
@@ -35,11 +37,13 @@ module EventbriteSDK
       context 'when id exists' do
         it 'calls save with `unverify`' do
           user = described_class.new('id' => '1')
-          allow(user).to receive(:save)
+          allow(EventbriteSDK).to receive(:post)
 
           user.unverify
 
-          expect(user).to have_received(:save).with('unverify')
+          expect(EventbriteSDK).
+            to have_received(:post).
+            with(url: 'users/1/unverify')
         end
       end
 

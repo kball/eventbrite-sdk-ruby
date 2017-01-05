@@ -45,12 +45,14 @@ module EventbriteSDK
       context 'when primary_key exists' do
         it 'calls save with `resend_confirmation_email`' do
           order = described_class.new('id' => '1')
-          allow(order).to receive(:save)
+          allow(EventbriteSDK).to receive(:post).and_return('email')
 
-          order.resend_confirmation_email
+          result = order.resend_confirmation_email
 
-          expect(order).to have_received(:save).
-            with('resend_confirmation_email')
+          expect(result).to eq('email')
+          expect(EventbriteSDK).
+            to have_received(:post).
+            with(url: 'orders/1/resend_confirmation_email')
         end
       end
 
@@ -68,11 +70,14 @@ module EventbriteSDK
       context 'when primary_key exists' do
         it 'calls save with the called method name' do
           order = described_class.new('id' => '1')
-          allow(order).to receive(:save)
+          allow(EventbriteSDK).to receive(:post).and_return('refunds')
 
-          order.refund
+          result = order.refund
 
-          expect(order).to have_received(:save).with('refunds')
+          expect(result).to eq('refunds')
+          expect(EventbriteSDK).to have_received(:post).with(
+            url: 'orders/1/refunds'
+          )
         end
       end
 

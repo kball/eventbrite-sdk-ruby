@@ -96,18 +96,20 @@ module EventbriteSDK
       context 'when id exists' do
         it 'calls save with `cancel`' do
           event = described_class.new('id' => '1')
-          allow(event).to receive(:save)
+          allow(EventbriteSDK).to receive(:post).and_return('bahleted')
 
-          event.cancel
+          result = event.cancel
 
-          expect(event).to have_received(:save).with('cancel')
+          expect(result).to eq('bahleted')
+          expect(EventbriteSDK).to have_received(:post).with(
+            url: 'events/1/cancel'
+          )
         end
       end
 
       context 'when id is absent' do
         it 'returns false' do
           event = described_class.new
-          allow(event).to receive(:save)
 
           expect(event.cancel).to eq(false)
         end
@@ -202,11 +204,12 @@ module EventbriteSDK
       context 'when id exists' do
         it 'calls save with the called method name' do
           event = described_class.new('id' => '1')
-          allow(event).to receive(:save)
+          allow(EventbriteSDK).to receive(:post).and_return('published')
 
-          event.publish
+          result = event.publish
 
-          expect(event).to have_received(:save).with('publish')
+          expect(result).to eq('published')
+          allow(EventbriteSDK).to receive(:post).and_return('published')
         end
       end
 
@@ -252,11 +255,14 @@ module EventbriteSDK
       context 'when id exists' do
         it 'calls save with the called method name' do
           event = described_class.new('id' => '1')
-          allow(event).to receive(:save)
+          allow(EventbriteSDK).to receive(:post).and_return('unpublish')
 
-          event.unpublish
+          result = event.unpublish
 
-          expect(event).to have_received(:save).with('unpublish')
+          expect(result).to eq('unpublish')
+          expect(EventbriteSDK).to have_received(:post).with(
+            url: 'events/1/unpublish'
+          )
         end
       end
 
