@@ -15,17 +15,52 @@ module EventbriteSDK
             expect(result.payload).to eq(payload)
           end
 
-          it 'when given an :expand option it passes as full options' do
-            payload = 'payload'
-            request = double('Request', get: payload)
+          context 'when given :expand option' do
+            context 'and the value is a symbol' do
+              it 'passes the given value as the expand option' do
+                payload = 'payload'
+                request = double('Request', get: payload)
 
-            result = TestEndpoint.retrieve({ id: 1 , expand: 'events' }, request)
+                result = TestEndpoint.retrieve({ id: 1 , expand: :events }, request)
 
-            expect(request).
-              to have_received(:get).
-              with(url: 'test/1', query: { expand: 'events' })
-            expect(result.payload).to eq(payload)
+                expect(request).
+                  to have_received(:get).
+                  with(url: 'test/1', query: { expand: 'events' })
+                expect(result.payload).to eq(payload)
+              end
+            end
 
+            context 'and the value is a CSV' do
+              it 'passes the given value as the expand option' do
+                payload = 'payload'
+                request = double('Request', get: payload)
+
+                result = TestEndpoint.retrieve(
+                  { id: 1 , expand: 'events,users' }, request
+                )
+
+                expect(request).
+                  to have_received(:get).
+                  with(url: 'test/1', query: { expand: 'events,users' })
+                expect(result.payload).to eq(payload)
+              end
+            end
+
+            context 'and the value is an array' do
+              it 'converts to a CSV and passes it as the expand option' do
+                payload = 'payload'
+                request = double('Request', get: payload)
+
+                result = TestEndpoint.retrieve(
+                  { id: 1 , expand: %i(events users) }, request
+                )
+
+                expect(request).
+                  to have_received(:get).
+                  with(url: 'test/1', query: { expand: 'events,users' })
+                expect(result.payload).to eq(payload)
+              end
+            end
           end
         end
 

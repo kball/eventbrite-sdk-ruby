@@ -5,16 +5,56 @@ module EventbriteSDK
         module ClassMethods
           attr_reader :path, :path_opts
 
+          # Retrieve a resource.
+          #
+          # params: Hash of supported parameters. The keys and values are
+          #         used to build the request URL by substituting supported
+          #         keys in the resource_path with the value defined in params.
+          #
+          #         The :expand key allows the support of expansions of child
+          #         objects. It supports strings, symbols and arrays.
+          #
+          #         expand: :something
+          #         expand: %i(something another)
+          #         expand: %w(something another)
+          #         expand: 'something,another'
+          #
+          # Example:
+          #
+          # class Thing < Resource
+          #   resource_path('things/:id')
+          # end
+          #
+          # Thing.retrieve(id: 1234, expand: :others)
+          #
+          # This tells the resource to replace the :id placeholder with the
+          # value 1234. It also will pass the :expand option with the
           def retrieve(params, request = EventbriteSDK)
             url_path = params.reduce(@path) do |path, (key, value)|
               path.gsub(":#{key}", value.to_s)
             end
 
-            query = { expand: params[:expand] } if params[:expand]
+            if params[:expand]
+              query = { expand: [*params[:expand]].join(',') }
+            end
 
             new request.get(url: url_path, query: query)
           end
 
+          # Define the url path for the resource. It also implicitly defines
+          # the primary key and any additional foreign keys required for this
+          # resource.
+          #
+          # Example:
+          #
+          # TicketClass is a resource that requires a primary key of id and a
+          # foreign key of event_id to be retrieved, modified or deleted.
+          #
+          # resource_path('events/:event_id/ticket_classes/:id')
+          #
+          # The resource now has #id and #event_id accessor methods, and
+          # requires those parameters to build the correct resource url path.
+          # See the retrieve method (above) for additional details.
           def resource_path(path)
             @path = path
 
@@ -25,7 +65,7 @@ module EventbriteSDK
                 @attrs[attr] if @attrs.respond_to?(attr)
               end
             end
-         end
+          end
         end
 
         module InstanceMethods
