@@ -9,6 +9,8 @@ module EventbriteSDK
       group_by
     ).freeze
 
+    VALID_REPORTS = %i(attendees sales).freeze
+
     def initialize
       @query = {}
     end
@@ -37,8 +39,8 @@ module EventbriteSDK
     end
 
     def retrieve(type = nil, sdk = EventbriteSDK)
-      unless %i(attendees sales).include?(type)
-        raise ArgumentError, '`:type` is not of [:attendees, :sales]'
+      unless VALID_REPORTS.include?(type)
+        raise ArgumentError, "`:type` is not of #{VALID_REPORTS}"
       end
 
       sdk.get(url: "reports/#{type}", query: query)
