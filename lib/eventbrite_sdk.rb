@@ -116,7 +116,7 @@ module EventbriteSDK
 
     response = RestClient::Request.execute(params)
 
-    JSON.parse(response.body)
+    JSON.parse(response.body) unless response.body == ''
   rescue *EXCEPTION_MAP.keys => err
     handler = EXCEPTION_MAP[err.class]
     raise handler[:class].new(handler[:message], err.response)
