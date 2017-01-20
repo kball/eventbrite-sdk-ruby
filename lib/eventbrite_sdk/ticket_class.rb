@@ -4,6 +4,11 @@ module EventbriteSDK
     # Ticket classes with future start dates are marked as NOT_YET_ON_SALE
     NOT_YET_ON_SALE = 'NOT_YET_ON_SALE'.freeze
 
+    # Constants for the supported sales channels
+    AT_THE_DOOR = 'atd'.freeze
+    ONLINE = 'online'.freeze
+    SALES_CHANNELS = [AT_THE_DOOR, ONLINE].freeze
+
     resource_path 'events/:event_id/ticket_classes/:id'
 
     belongs_to :event, object_class: 'Event'
