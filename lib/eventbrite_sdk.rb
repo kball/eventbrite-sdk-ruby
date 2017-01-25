@@ -94,7 +94,14 @@ module EventbriteSDK
   def self.post(params)
     params[:headers] = { 'Content-Type' => 'application/json' }
     params[:method] = :post
-    params[:payload] = params[:payload].to_json
+
+    # Don't convert nil to json.
+    #
+    # BadRequest is raised when you publish an event because the body sent is
+    # "null" (invalid json) and the API rejects it.
+    if params[:payload]
+      params[:payload] = params[:payload].to_json
+    end
 
     request(params)
   end
