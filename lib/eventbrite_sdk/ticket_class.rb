@@ -25,7 +25,7 @@ module EventbriteSDK
       boolean 'free'
       boolean 'include_fee'
       boolean 'split_fee'
-      string 'sales_channels' # TODO list
+      string 'sales_channels'
       datetime 'sales_start'
       datetime 'sales_end'
       integer 'minimum_quantity'
