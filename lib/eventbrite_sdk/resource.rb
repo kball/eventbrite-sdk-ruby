@@ -74,7 +74,7 @@ module EventbriteSDK
     end
 
     def to_json(opts = {})
-      attrs.to_json
+      attrs.to_json(opts)
     end
 
     def delete(request = EventbriteSDK)
