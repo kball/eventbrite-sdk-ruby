@@ -221,6 +221,19 @@ module EventbriteSDK
       end
     end
 
+    describe '#to_json' do
+      subject { DummyResource.new }
+
+      it 'delegates to @attributes' do
+        options = {}
+        allow(subject.attrs).to receive(:to_json).and_call_original
+
+        subject.to_json(options)
+
+        expect(subject.attrs).to have_received(:to_json).with(options)
+      end
+    end
+
     describe 'message expectations' do
       context 'with blank attributes' do
         subject { DummyResource.new }
