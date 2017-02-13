@@ -142,6 +142,28 @@ describe EventbriteSDK do
         end.to raise_error(described_class::Unauthorized)
       end
     end
+
+    context 'when payload is not specified' do
+      it 'does not get converted to JSON' do
+        token = 'token'
+        described_class.token = token
+        response = double(body: { something_happened: true }.to_json)
+
+        allow(RestClient::Request).to receive(:execute).and_return(response)
+
+        described_class.post(url: 'events/1/publish')
+
+        expect(RestClient::Request).to have_received(:execute).with(
+          headers: {
+            'Content-Type' => 'application/json',
+            'Authorization' => "Bearer #{token}"
+          },
+          method: :post,
+          url: "#{described_class::BASE}/events/1/publish/",
+          verify_ssl: true,
+        )
+      end
+    end
   end
 
   describe '.token=' do
