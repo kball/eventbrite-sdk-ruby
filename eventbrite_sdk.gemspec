@@ -7,6 +7,7 @@ Gem::Specification.new do |spec|
   spec.version       = EventbriteSDK::VERSION
   spec.authors       = ['Vinnie Franco', 'Jeff McKenzie', 'Emilio Tagua']
   spec.email         = ['vinnie@eventbrite.com', 'jeffm@eventbrite.com', 'emilio@eventbrite.com']
+  spec.required_ruby_version = '>= 2.3.0'
 
   spec.summary       = %{Official Eventbrite SDK for the v3 API}
   spec.description   = %{Official Eventbrite SDK for the v3 API}
