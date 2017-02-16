@@ -13,22 +13,35 @@ module EventbriteSDK
         end
 
         describe '.has_many' do
-          it 'defines a method that returns a new list_class instance' do
-            allow(ResourceList).to receive(:new).and_call_original
-            car = TestRelations::Car.new
+          context 'when resource#new? is true' do
+            it 'returns a BlankResourceList' do
+              car = TestRelations::Car.new
+              allow(car).to receive(:new?).and_return(true)
 
-            result = car.wheels
+              result = car.wheels
 
-            expect(result).to be_an_instance_of(ResourceList)
+              expect(result).to be_an_instance_of(BlankResourceList)
+            end
+          end
 
-            expect(ResourceList).to have_received(:new).with(
-              url_base:
-                car.path(:wheels),
-              object_class:
-                EventbriteSDK::Resource::Operations::TestRelations::Wheel,
-              key:
-                'wheels'
-            )
+          context 'when resource#new? is false' do
+            it 'defines a method that returns a new list_class instance' do
+              allow(ResourceList).to receive(:new).and_call_original
+              car = TestRelations::Car.new
+
+              result = car.wheels
+
+              expect(result).to be_an_instance_of(ResourceList)
+
+              expect(ResourceList).to have_received(:new).with(
+                url_base:
+                  car.path(:wheels),
+                object_class:
+                  EventbriteSDK::Resource::Operations::TestRelations::Wheel,
+                key:
+                  'wheels'
+              )
+            end
           end
         end
 
@@ -43,6 +56,10 @@ module EventbriteSDK
 
             def self.retrieve(value)
               value # Just pass through given value
+            end
+
+            def new?
+              false
             end
 
             def path(arg)

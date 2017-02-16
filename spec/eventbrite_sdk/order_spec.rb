@@ -93,8 +93,8 @@ module EventbriteSDK
 
     describe '#attendees' do
       context 'when order is new' do
-        it 'instantiates a new empty ResourceList' do
-          expect(subject.attendees).to be_an_instance_of(ResourceList)
+        it 'instantiates a BlankResourceList' do
+          expect(subject.attendees).to be_an_instance_of(BlankResourceList)
           expect(subject.attendees).to be_empty
         end
       end

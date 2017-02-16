@@ -11,8 +11,9 @@ require 'eventbrite_sdk/resource/operations/relationships'
 require 'eventbrite_sdk/resource/attributes'
 require 'eventbrite_sdk/resource/null_schema_definition'
 require 'eventbrite_sdk/resource/schema_definition'
-require 'eventbrite_sdk/resource_list'
+require 'eventbrite_sdk/blank_resource_list'
 require 'eventbrite_sdk/resource'
+require 'eventbrite_sdk/resource_list'
 
 require 'eventbrite_sdk/lists/owned_event_orders_list'
 
