@@ -50,31 +50,32 @@ module EventbriteSDK
           # a method on the instance with the given +rel_method+
           # ============================================
           #
-          # class Car
-          #   include Resource::Operations::Relationships
+          #   class Car
+          #     include Resource::Operations::Relationships
           #
-          #   has_many :wheels, object: 'Wheel', key: 'wheels'
+          #     has_many :wheels, object: 'Wheel', key: 'wheels'
           #
-          #   def resource_path(postfix)
-          #     "my_path/1/#{postfix}"
+          #     def resource_path(postfix)
+          #       "my_path/1/#{postfix}"
+          #     end
+          #
+          #     # ...
           #   end
           #
-          #   ...
-          # end
-          #
-          # Car.new('id' => '1').wheels
+          #   Car.new('id' => '1').wheels
           #
           # Would instantiate a new ResourceList
           #
-          # ResourceList.new(
-          #   url_base: 'my_path/1/wheels',
-          #   object_class: Wheel,
-          #   key: :wheels
-          # )
+          #   ResourceList.new(
+          #     url_base: 'my_path/1/wheels',
+          #     object_class: Wheel,
+          #     key: :wheels
+          #   )
           #
           # rel_method: Symbol of the method we are defining on this instance
           # object_class: String representation of the Class we will give
-          #               to ResourceList
+          # to ResourceList
+          #
           # key: key to use when ResourceList is extracting objects from
           #      a list payload, if nil then rel_method is used as a default
           #
@@ -82,11 +83,16 @@ module EventbriteSDK
             define_method(rel_method) do
               key ||= rel_method
 
-              relationships[rel_method] ||= list_class(rel_method).new(
-                url_base: path(rel_method),
-                object_class: resource_class_from_string(object_class),
-                key: key
-              )
+              # Don't memoize if it's a new instance
+              if new?
+                BlankResourceList.new(key: key)
+              else
+                relationships[rel_method] ||= list_class(rel_method).new(
+                  url_base: path(rel_method),
+                  object_class: resource_class_from_string(object_class),
+                  key: key
+                )
+              end
             end
           end
         end
