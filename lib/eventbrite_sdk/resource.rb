@@ -68,9 +68,9 @@ module EventbriteSDK
                                 payload: attrs.payload(self.class.prefix))
 
         reload(response)
-
-        true
       end
+
+      true
     end
 
     def to_json(opts = {})

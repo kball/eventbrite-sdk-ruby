@@ -70,90 +70,113 @@ module EventbriteSDK
     end
 
     describe '#save' do
-      before do
-        EventbriteSDK.token = 'token'
+      before { EventbriteSDK.token = 'token' }
+
+      context 'when resource has changed' do
+        context 'and the resource is new' do
+          context 'and save is successful' do
+            it 'sets the returned id, resets changes and returns true' do
+              name = "Test event #{SecureRandom.hex(4)}"
+
+              described_class.resource_path 'events/:id'
+              described_class.attributes_prefix 'event'
+              allow(described_class).to receive(:schema).and_return(
+                Resource::NullSchemaDefinition.new
+              )
+
+              stub_post_with_response(
+                path: 'events',
+                fixture: :event_created,
+                override: {
+                  'id' => 'new',
+                  'name' => {
+                    'html' => name,
+                  }
+                }
+              )
+
+              resource = described_class.build(
+                'name.html' => name,
+                'start.timezone' => 'America/Los_Angeles',
+                'start.utc' => '2016-06-06T02:00:00Z',
+                'end.timezone' => 'America/Los_Angeles',
+                'end.utc' => '2016-07-06T02:00:00Z',
+                'currency' => 'USD'
+              )
+
+              expect(resource.save).to eq(true)
+
+              expect(resource.id).not_to be_nil
+              expect(resource.name.html).to eq(name)
+              expect(resource).not_to be_new
+              expect(resource).not_to be_changed
+            end
+          end
+        end
+
+        context 'and the resource already exists' do
+          it 'rehydrates the instance with the response of the endpoint' do
+            name = "Test event #{SecureRandom.hex(4)}"
+            id = '111'
+
+            stub_get(
+              path: "events/#{id}",
+              fixture: :event_read,
+              override: { 'id' => id }
+            )
+            stub_post_with_response(
+              path: "events/#{id}",
+              fixture: :event_created,
+              override: {
+                'id' => id,
+                'name' => {
+                  'html' => name,
+                  'text' => name
+                }
+              }
+            )
+            event = DummyResource.retrieve(id: id)
+
+            event.assign_attributes('name.html' => name)
+
+            event.save
+
+            expect(event.id).to eq(id)
+            expect(event.name.html).to eq(name)
+          end
+        end
       end
 
-      context 'with a new resource' do
-        context 'when save is successful' do
-          it 'sets the returned id, and resets changes' do
-            name = "Test event #{SecureRandom.hex(4)}"
 
+      context 'when resource has not changed' do
+        context 'and given a postfix_path' do
+          it 'passes it to endpoint_path, makes the request and returns true' do
+            described_class.resource_path 'events/:id'
+            resource = described_class.new('id' => '1234')
+            repo = double(post: { 'id' => '1234' })
+
+            result = resource.save('postfix', repo)
+
+            expect(result).to eq(true)
+            expect(repo).to have_received(:post).with(
+              url: 'events/1234/postfix', payload: {}
+            )
+          end
+        end
+
+        context 'and not given postfix_path' do
+          it 'returns true without making a request' do
             described_class.resource_path 'events/:id'
             described_class.attributes_prefix 'event'
             allow(described_class).to receive(:schema).and_return(
               Resource::NullSchemaDefinition.new
             )
 
-            stub_post_with_response(
-              path: 'events',
-              fixture: :event_created,
-              override: {
-                'id' => 'new',
-                'name' => {
-                  'html' => name,
-                }
-              }
-            )
+            allow(EventbriteSDK).to receive(:post)
 
-            resource = described_class.build(
-              'name.html' => name,
-              'start.timezone' => 'America/Los_Angeles',
-              'start.utc' => '2016-06-06T02:00:00Z',
-              'end.timezone' => 'America/Los_Angeles',
-              'end.utc' => '2016-07-06T02:00:00Z',
-              'currency' => 'USD'
-            )
-
-            expect(resource.save).to eq(true)
-
-            expect(resource.id).not_to be_nil
-            expect(resource.name.html).to eq(name)
-            expect(resource).not_to be_new
-            expect(resource).not_to be_changed
+            expect(subject.save).to eq(true)
+            expect(EventbriteSDK).not_to have_received(:post)
           end
-        end
-      end
-
-      context 'when a resource that has a id' do
-        it 'rehydrates the instance with the response of the endpoint' do
-          name = "Test event #{SecureRandom.hex(4)}"
-          stub_get(
-            path: 'events/111',
-            fixture: :event_read,
-            override: { 'id' => '111' }
-          )
-          stub_post_with_response(
-            path: 'events/111',
-            fixture: :event_created,
-            override: {
-              'name' => {
-                'html' => name,
-                'text' => name
-              }
-            }
-          )
-          event = DummyResource.retrieve(id: '111')
-
-          event.assign_attributes('name.html' => name)
-
-          event.save
-
-          expect(event.name.html).to eq(name)
-        end
-      end
-
-      context 'when given a postfix_path' do
-        it 'passes it to endpoint_path' do
-          described_class.resource_path 'events/:id'
-          resource = described_class.new('id' => '1234')
-          repo = double(post: { 'id' => '1234' })
-
-          resource.save('postfix', repo)
-
-          expect(repo).to have_received(:post).with(
-            url: 'events/1234/postfix', payload: {}
-          )
         end
       end
     end
