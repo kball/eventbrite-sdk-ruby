@@ -1,6 +1,11 @@
 module EventbriteSDK
   class Resource
     class Attributes
+      SISTER_FIELDS = {
+        'timezone' => 'utc',
+        'utc' => 'timezone'
+      }.freeze
+
       attr_reader :attrs, :changes
 
       def self.build(attrs, schema)
@@ -108,11 +113,11 @@ module EventbriteSDK
       # you can run into a case where a "rich media" field needs other attrs
       # Namely timezone, so if a rich date changed, add the tz with it.
       def add_rich_value(attribute_key)
-        if changes[attribute_key] && attribute_key =~ /\A(.+)\.utc\z/
+        if changes[attribute_key] && attribute_key =~ /\A(.+)\.(utc|timezone)\z/
+          field = Regexp.last_match(2)
           key_prefix = Regexp.last_match(1)
-          tz = attrs.dig(key_prefix, 'timezone')
 
-          changes["#{key_prefix}.timezone"] = [tz, tz]
+          handle_sister_field(key_prefix, field)
         end
       end
 
@@ -140,6 +145,15 @@ module EventbriteSDK
 
       def respond_to_missing?(method_name, _include_private = false)
         attrs.has_key?(method_name.to_s) || super
+      end
+
+      def handle_sister_field(key_prefix, field)
+        sister_field = SISTER_FIELDS[field]
+        stale_value = attrs.dig(key_prefix, sister_field)
+
+        unless changes["#{key_prefix}.#{sister_field}"]
+          changes["#{key_prefix}.#{sister_field}"] = [stale_value, stale_value]
+        end
       end
 
       def handle_requested_attr(value)

@@ -58,6 +58,42 @@ module EventbriteSDK
     end
 
     describe '#changes' do
+      it 'still sends utc event if only tz changed' do
+        event = described_class.new(
+          'start' => {
+            'utc' => '2012-01-01', 'timezone' => 'America/Los_Angeles'
+          }
+        )
+
+        event.assign_attributes(
+          'start.timezone' => 'America/Chicago',
+          'start.utc' => '2012-01-01'
+        )
+
+        expect(event.changes).to match(
+          'start.utc' => ['2012-01-01', '2012-01-01'],
+          'start.timezone' => ['America/Los_Angeles', 'America/Chicago']
+        )
+      end
+
+      it 'still sends utc event if only TZ changed, order does not matter' do
+        event = described_class.new(
+          'start' => {
+            'utc' => '2012-01-01', 'timezone' => 'America/Los_Angeles'
+          }
+        )
+
+        event.assign_attributes(
+          'start.utc' => '2012-01-01',
+          'start.timezone' => 'America/Chicago'
+        )
+
+        expect(event.changes).to match(
+          'start.utc' => ['2012-01-01', '2012-01-01'],
+          'start.timezone' => ['America/Los_Angeles', 'America/Chicago']
+        )
+      end
+
       it 'auto dirties TZ when you touch an attribute that ends in "utc"' do
         event = described_class.new(
           'start' => {
