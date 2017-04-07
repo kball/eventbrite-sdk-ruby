@@ -2,6 +2,30 @@ require 'spec_helper'
 
 module EventbriteSDK
   RSpec.describe TicketClass do
+    describe 'defined schema' do
+      it 'responds to all everything defined in the schema' do
+        expect(subject).to respond_to :name
+        expect(subject).to respond_to :description
+        expect(subject).to respond_to :quantity_total
+        expect(subject).to respond_to :cost
+        expect(subject).to respond_to :fee
+        expect(subject).to respond_to :tax
+        expect(subject).to respond_to :free
+        expect(subject).to respond_to :include_fee
+        expect(subject).to respond_to :split_fee
+        expect(subject).to respond_to :sales_channels
+        expect(subject).to respond_to :sales_start
+        expect(subject).to respond_to :sales_end
+        expect(subject).to respond_to :sales_start_after
+        expect(subject).to respond_to :minimum_quantity
+        expect(subject).to respond_to :maximum_quantity
+        expect(subject).to respond_to :auto_hide
+        expect(subject).to respond_to :hidden
+        expect(subject).to respond_to :order_confirmation_message
+        expect(subject).to respond_to :on_sale_status
+      end
+    end
+
     describe '.retrieve' do
       context 'when found' do
         it 'returns the new instance with the populated attributes' do
