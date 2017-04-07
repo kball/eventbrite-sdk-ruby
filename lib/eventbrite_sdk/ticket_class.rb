@@ -28,6 +28,7 @@ module EventbriteSDK
       string 'sales_channels'
       datetime 'sales_start'
       datetime 'sales_end'
+      string 'sales_start_after'
       integer 'minimum_quantity'
       integer 'maximum_quantity'
       boolean 'auto_hide'
