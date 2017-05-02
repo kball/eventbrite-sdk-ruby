@@ -207,6 +207,33 @@ module EventbriteSDK
       end
     end
 
+    describe '#attendees' do
+      context 'when event is new' do
+        it 'instantiates a BlankResourceList' do
+          expect(subject.attendees).to be_an_instance_of(BlankResourceList)
+          expect(subject.attendees).to be_empty
+        end
+      end
+
+      context 'when event exists' do
+        it 'hydrates a list of Attendees' do
+          stub_get(
+            path: 'events/31337',
+            fixture: :event_read,
+            override: { 'id' => '31337' },
+          )
+          stub_get(path: 'events/31337/attendees/?page=1', fixture: :attendees_read)
+
+          event = described_class.retrieve(id: '31337')
+
+          event.attendees.retrieve
+
+          expect(event.attendees).to be_an_instance_of(ResourceList)
+          expect(event.attendees.first).to be_an_instance_of(Attendee)
+        end
+      end
+    end
+
     describe '#ticket_classes' do
       context 'when event is new' do
         it 'instantiates a BlankResourceList' do

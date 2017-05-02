@@ -17,6 +17,7 @@ module EventbriteSDK
     belongs_to :venue, object_class: 'Venue'
 
     has_many :orders, object_class: 'Order'
+    has_many :attendees, object_class: 'Attendee'
     has_many :ticket_classes, object_class: 'TicketClass'
 
     schema_definition do
